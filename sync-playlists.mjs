@@ -16,14 +16,15 @@ const KEY = process.env.YOUTUBE_API_KEY;
 function fail(msg) { console.error("✖ " + msg); process.exit(1); }
 if (!KEY) fail("المتغير YOUTUBE_API_KEY غير مضبوط. أنشئ مفتاحًا من Google Cloud (YouTube Data API v3) وضعه في بيئة الخادم، ولا تضعه في الكود أو المستودع.");
 
-async function call(endpoint, params) {
+async function call(endpoint, params, soft) {
   const url = new URL(`${API}/${endpoint}`);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
   url.searchParams.set("key", KEY);
   let res;
-  try { res = await fetch(url); } catch (e) { fail(`تعذّر الاتصال بـ YouTube API (شبكة/DNS): ${e.message}`); }
+  try { res = await fetch(url); } catch (e) { if (soft) return null; fail(`تعذّر الاتصال بـ YouTube API (شبكة/DNS): ${e.message}`); }
   const body = await res.json().catch(() => ({}));
   if (!res.ok) {
+    if (soft) return null;
     const e = body.error || {};
     const reason = (e.errors && e.errors[0] && e.errors[0].reason) || e.status || res.status;
     const hints = {
@@ -57,6 +58,7 @@ do {
     const th = it.snippet.thumbnails || {};
     const best = th.maxres || th.standard || th.high || th.medium || th.default || {};
     fetched.push({
+      order: fetched.length, // ترتيب الواجهة
       playlistId: it.id,
       title: it.snippet.title,
       description: it.snippet.description || "",
@@ -67,6 +69,19 @@ do {
   }
   pageToken = r.nextPageToken;
 } while (pageToken);
+
+// ترتيب القناة الفعلي من أقسام صفحة القناة (إن وُجدت)؛ وإلا يبقى ترتيب playlists.list
+const secs = await call("channelSections", { part: "snippet,contentDetails", channelId }, true);
+if (secs && secs.items) {
+  const ids = [];
+  secs.items.slice().sort((a, b) => ((a.snippet || {}).position || 0) - ((b.snippet || {}).position || 0))
+    .forEach((s) => ((s.contentDetails || {}).playlists || []).forEach((id) => { if (!ids.includes(id)) ids.push(id); }));
+  if (ids.length) {
+    const rank = new Map(ids.map((id, i) => [id, i]));
+    fetched.forEach((f) => { f.order = rank.has(f.playlistId) ? rank.get(f.playlistId) : 1000 + f.order; });
+    console.log(`✔ طُبّق ترتيب أقسام القناة على ${ids.length} قائمة`);
+  }
+}
 
 if (!fetched.length) fail("لم تُرجع الواجهة أي قائمة عامة. لم أعدّل playlists.json حفاظًا على بياناتك.");
 
@@ -97,7 +112,8 @@ if (hi > -1) {
   const re = /\/\*YT_PLAYLISTS\*\/[\s\S]*?\/\*END_YT\*\//;
   if (!re.test(html)) fail("لم أجد العلامتين /*YT_PLAYLISTS*/ و /*END_YT*/ في ملف HTML.");
   const out = db.playlists.filter((x) => !x.hidden && !x.missing)
-    .map((x) => ({ id: x.playlistId, t: x.title, n: x.videoCount, img: x.thumbnail, sec: x.section || DEFAULT_SECTION }));
+    .sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999))
+    .map((x) => ({ o: x.order ?? 9999, id: x.playlistId, t: x.title, n: x.videoCount, img: x.thumbnail, sec: x.section || DEFAULT_SECTION }));
   html = html.replace(re, () => `/*YT_PLAYLISTS*/${JSON.stringify(out).replace(/</g, "\\u003c")}/*END_YT*/`);
   fs.writeFileSync(file, html);
   console.log(`✔ حُقنت ${out.length} قائمة في ${path.basename(file)}`);
