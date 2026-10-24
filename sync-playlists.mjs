@@ -11,6 +11,8 @@ const API = process.env.YT_API_BASE || "https://www.googleapis.com/youtube/v3";
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const DB = path.join(DIR, "playlists.json");
 const DEFAULT_SECTION = "برامج القناة"; // قسم موجود أصلًا في الموقع
+const MAX_UPLOADS = Number(process.env.MAX_UPLOADS || 1500); // أقصى عدد فيديوهات تُفحص لحساب الأحدث والأكثر مشاهدة
+const PER_PLAYLIST = 60; // أقصى فيديوهات تُجلب لكل قائمة
 const KEY = process.env.YOUTUBE_API_KEY;
 
 function fail(msg) { console.error("✖ " + msg); process.exit(1); }
@@ -40,9 +42,10 @@ async function call(endpoint, params, soft) {
 }
 
 // 1) معرّف القناة من الـ handle
-const ch = await call("channels", { part: "id", forHandle: HANDLE });
+const ch = await call("channels", { part: "id,contentDetails", forHandle: HANDLE });
 if (!ch.items || !ch.items.length) fail(`لم يُعثر على قناة بالـ handle ${HANDLE}.`);
 const channelId = ch.items[0].id;
+const uploadsId = (((ch.items[0].contentDetails || {}).relatedPlaylists) || {}).uploads;
 if (channelId !== EXPECTED_CHANNEL_ID) console.warn(`⚠ معرّف القناة ${channelId} يختلف عن المتوقع ${EXPECTED_CHANNEL_ID}.`);
 
 // 2) كل القوائم العامة مع الترقيم عبر nextPageToken
@@ -85,6 +88,50 @@ if (secs && secs.items) {
 
 if (!fetched.length) fail("لم تُرجع الواجهة أي قائمة عامة. لم أعدّل playlists.json حفاظًا على بياناتك.");
 
+
+// 3.5) الفيديوهات: كل قائمة + الأحدث + الأكثر مشاهدة (أخطاؤها لا توقف المزامنة ولا تمسح ما سبق)
+const VDB = path.join(DIR, "videos.json");
+let prevV = { newest: [], top: [], by: {} };
+if (fs.existsSync(VDB)) try { prevV = JSON.parse(fs.readFileSync(VDB, "utf8")); } catch {}
+async function listItems(plId, cap) {
+  const out = []; let tok;
+  do {
+    const r = await call("playlistItems", { part: "snippet,contentDetails", playlistId: plId, maxResults: "50", ...(tok ? { pageToken: tok } : {}) }, true);
+    if (!r) return out.length ? out : null;
+    for (const it of r.items || []) {
+      const id = it.contentDetails && it.contentDetails.videoId, t = it.snippet && it.snippet.title;
+      if (!id || t === "Private video" || t === "Deleted video") continue;
+      out.push({ id, t, at: (it.contentDetails.videoPublishedAt || it.snippet.publishedAt || "") });
+      if (out.length >= cap) return out;
+    }
+    tok = r.nextPageToken;
+  } while (tok);
+  return out;
+}
+const vdb = { syncedAt: new Date().toISOString(), newest: prevV.newest || [], top: prevV.top || [], by: {} };
+let vNotes = [];
+const ups = uploadsId ? await listItems(uploadsId, MAX_UPLOADS) : null;
+if (ups && ups.length) {
+  const stats = new Map();
+  for (let i = 0; i < ups.length; i += 50) {
+    const r = await call("videos", { part: "statistics,status", id: ups.slice(i, i + 50).map((x) => x.id).join(",") }, true);
+    for (const v of (r && r.items) || []) stats.set(v.id, v);
+  }
+  const ok = ups.filter((x) => { const v = stats.get(x.id); return v && (!v.status || (v.status.privacyStatus === "public" && v.status.embeddable !== false)); })
+    .map((x) => ({ id: x.id, t: x.t, at: x.at, w: Number(((stats.get(x.id).statistics) || {}).viewCount || 0) }));
+  vdb.newest = ok.slice().sort((a, b) => b.at.localeCompare(a.at)).slice(0, 20);
+  vdb.top = ok.slice().sort((a, b) => b.w - a.w).slice(0, 20);
+  vNotes.push(`${ok.length} فيديو مفحوص`);
+} else console.warn("⚠ تعذّر جلب الفيديوهات المرفوعة؛ أُبقيت بيانات الأحدث/الأكثر مشاهدة السابقة.");
+let plFail = 0;
+for (const f of fetched) {
+  const r = await listItems(f.playlistId, PER_PLAYLIST);
+  if (r && r.length) vdb.by[f.playlistId] = r.map((x) => ({ id: x.id, t: x.t }));
+  else { if (prevV.by && prevV.by[f.playlistId]) vdb.by[f.playlistId] = prevV.by[f.playlistId]; plFail++; }
+}
+fs.writeFileSync(VDB, JSON.stringify(vdb) + "\n");
+console.log(`✔ فيديوهات: ${Object.keys(vdb.by).length} قائمة، ${vdb.newest.length} أحدث، ${vdb.top.length} الأكثر مشاهدة ${vNotes.join(" | ")}${plFail ? " | قوائم بلا فيديوهات: " + plFail : ""}`);
+
 // 3) الدمج: تحديث حقول يوتيوب فقط، والحفاظ على التصنيف اليدوي، بلا تكرار ولا حذف
 let db = { channelId, syncedAt: null, playlists: [] };
 if (fs.existsSync(DB)) db = JSON.parse(fs.readFileSync(DB, "utf8"));
@@ -113,8 +160,15 @@ if (hi > -1) {
   if (!re.test(html)) fail("لم أجد العلامتين /*YT_PLAYLISTS*/ و /*END_YT*/ في ملف HTML.");
   const out = db.playlists.filter((x) => !x.hidden && !x.missing)
     .sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999))
-    .map((x) => ({ o: x.order ?? 9999, id: x.playlistId, t: x.title, n: x.videoCount, img: x.thumbnail, sec: x.section || DEFAULT_SECTION }));
+    .map((x) => ({ o: x.order ?? 9999, id: x.playlistId, t: x.title, n: x.videoCount, img: x.thumbnail, sec: x.section || null }));
   html = html.replace(re, () => `/*YT_PLAYLISTS*/${JSON.stringify(out).replace(/</g, "\\u003c")}/*END_YT*/`);
+  const reV = /\/\*YT_VIDEOS\*\/[\s\S]*?\/\*END_YTV\*\//;
+  if (reV.test(html)) {
+    const hid = new Set(db.playlists.filter((x) => x.hidden || x.missing).map((x) => x.playlistId));
+    const by = {}; for (const [k, v] of Object.entries(vdb.by)) if (!hid.has(k)) by[k] = v;
+    const payload = JSON.stringify({ newest: vdb.newest, top: vdb.top, by }).replace(/</g, "\\u003c");
+    html = html.replace(reV, () => `/*YT_VIDEOS*/${payload}/*END_YTV*/`);
+  } else console.warn("⚠ لا توجد علامة /*YT_VIDEOS*/ في الصفحة؛ لم تُحقن الفيديوهات.");
   fs.writeFileSync(file, html);
   console.log(`✔ حُقنت ${out.length} قائمة في ${path.basename(file)}`);
 }
