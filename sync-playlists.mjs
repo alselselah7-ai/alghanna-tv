@@ -108,25 +108,26 @@ async function listItems(plId, cap) {
   } while (tok);
   return out;
 }
-const vdb = { syncedAt: new Date().toISOString(), newest: prevV.newest || [], top: prevV.top || [], by: {} };
+const vdb = { syncedAt: new Date().toISOString(), newest: prevV.newest || [], top: prevV.top || [], lives: prevV.lives || [], by: {} };
 let vNotes = [];
 const ups = uploadsId ? await listItems(uploadsId, MAX_UPLOADS) : null;
 if (ups && ups.length) {
   const stats = new Map();
   for (let i = 0; i < ups.length; i += 50) {
-    const r = await call("videos", { part: "statistics,status", id: ups.slice(i, i + 50).map((x) => x.id).join(",") }, true);
+    const r = await call("videos", { part: "statistics,status,liveStreamingDetails", id: ups.slice(i, i + 50).map((x) => x.id).join(",") }, true);
     for (const v of (r && r.items) || []) stats.set(v.id, v);
   }
   const ok = ups.filter((x) => { const v = stats.get(x.id); return v && (!v.status || (v.status.privacyStatus === "public" && v.status.embeddable !== false)); })
-    .map((x) => ({ id: x.id, t: x.t, at: x.at, w: Number(((stats.get(x.id).statistics) || {}).viewCount || 0) }));
+    .map((x) => ({ id: x.id, t: x.t, at: x.at, w: Number(((stats.get(x.id).statistics) || {}).viewCount || 0), lv: !!((stats.get(x.id).liveStreamingDetails || {}).actualStartTime) }));
   vdb.newest = ok.slice().sort((a, b) => b.at.localeCompare(a.at)).slice(0, 20);
   vdb.top = ok.slice().sort((a, b) => b.w - a.w).slice(0, 20);
+  vdb.lives = ok.filter((x) => x.lv).sort((a, b) => b.at.localeCompare(a.at)).slice(0, 40);
   vNotes.push(`${ok.length} فيديو مفحوص`);
 } else console.warn("⚠ تعذّر جلب الفيديوهات المرفوعة؛ أُبقيت بيانات الأحدث/الأكثر مشاهدة السابقة.");
 let plFail = 0;
 for (const f of fetched) {
   const r = await listItems(f.playlistId, PER_PLAYLIST);
-  if (r && r.length) vdb.by[f.playlistId] = r.map((x) => ({ id: x.id, t: x.t }));
+  if (r && r.length) vdb.by[f.playlistId] = r.map((x) => ({ id: x.id, t: x.t, at: (x.at || "").slice(0, 10) }));
   else { if (prevV.by && prevV.by[f.playlistId]) vdb.by[f.playlistId] = prevV.by[f.playlistId]; plFail++; }
 }
 fs.writeFileSync(VDB, JSON.stringify(vdb) + "\n");
@@ -166,7 +167,7 @@ if (hi > -1) {
   if (reV.test(html)) {
     const hid = new Set(db.playlists.filter((x) => x.hidden || x.missing).map((x) => x.playlistId));
     const by = {}; for (const [k, v] of Object.entries(vdb.by)) if (!hid.has(k)) by[k] = v;
-    const payload = JSON.stringify({ newest: vdb.newest, top: vdb.top, by }).replace(/</g, "\\u003c");
+    const payload = JSON.stringify({ newest: vdb.newest, top: vdb.top, lives: vdb.lives, by }).replace(/</g, "\\u003c");
     html = html.replace(reV, () => `/*YT_VIDEOS*/${payload}/*END_YTV*/`);
   } else console.warn("⚠ لا توجد علامة /*YT_VIDEOS*/ في الصفحة؛ لم تُحقن الفيديوهات.");
   fs.writeFileSync(file, html);
