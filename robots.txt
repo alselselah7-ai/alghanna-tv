@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alselselah7-ai.github.io/alghanna-tv/sitemap.xml
