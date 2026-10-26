@@ -1,1 +1,56 @@
-{}
+{
+ "title": {
+  "list:PL9Hi8v96O4NlcvqEmzUtFZcJc-pok4bE8": "مسرحية بموسم زيارة الصحابي سيدنا عبّاد بن بشر الأنصاري"
+ },
+ "rows": [
+  {
+   "key": "cmvp8rvlx",
+   "name": "أوراد وأذكار",
+   "tab": "home"
+  }
+ ],
+ "move": {
+  "E0zefsw9tfA": "cmvp8rvlx",
+  "hL2SRIDTmdM": "show",
+  "YmZvNI2V01Q": "show",
+  "tc7TPJPB-tc": "show",
+  "rJQqYnvUrg0": "show",
+  "I987dCxltWY": "show",
+  "YkKPtQBGZMM": "show",
+  "lMgRcMpUVks": "show",
+  "hO4Khqd0788": "show",
+  "bmFetTnal_Q": "show",
+  "6b9_hF_9hgk": "show",
+  "-Mz7YPp9yhI": "show",
+  "MuZt7BOuRxo": "show",
+  "BYRBHn6wCII": "pl:PLa2gxXL2I8nc",
+  "29GHBsj779k": "pl:PLa2gxXL2I8nc",
+  "nqdg_n2bDRY": "show",
+  "gSBMFn8SGQ0": "show",
+  "pmbEYUG1h7I": "pl:PLa2gxXL2I8nc",
+  "BRMuVTKJIVI": "pl:PL9Hi8v96O4NlLKgyiLCf8x2t8U3ogo5sd",
+  "W9KZUjhcm30": "show",
+  "x7bJzlqHWvk": "pl:PL9Hi8v96O4NlLKgyiLCf8x2t8U3ogo5sd",
+  "2qAQoPMp1DQ": "pl:PL9Hi8v96O4NlLKgyiLCf8x2t8U3ogo5sd",
+  "Jq0RYlRBERI": "pl:PL9Hi8v96O4NlLKgyiLCf8x2t8U3ogo5sd",
+  "list:PLAlF6DH_SSzU": "cmvp8rvlx",
+  "list:PL9Hi8v96O4NlcvqEmzUtFZcJc-pok4bE8": "plays"
+ },
+ "rowTitle": {
+  "pl:PL9Hi8v96O4NnVXCnBQbKGZBLZhJEBIbIB": "مختار الحديث",
+  "pl:PL9Hi8v96O4NmBAzzsvYeqhGwEuNRGn3md": "كليب وأوبريت",
+  "pl:PL9Hi8v96O4NkFRBb81DJ33vKNyQ4Xt_H_": "مسلسل كما تدين تدان",
+  "pl:PL9Hi8v96O4NlN1nohnFgODibT1elhROxc": "كرتون حارة الطيبين",
+  "pl:PL9Hi8v96O4NkZsjZ9UbuoaDXYUQqzVNeR": "بروموهات رمضان 1445هـ",
+  "pl:PL9Hi8v96O4NlbPSsULRP-tyQ0OB5iHX5k": "برنامج | ختايم رمضانية 1"
+ },
+ "hideRow": {
+  "pl:PL9Hi8v96O4NnVXCnBQbKGZBLZhJEBIbIB": true,
+  "pl:PL9Hi8v96O4NmXd5l0oyG1MPJvEgubGi5f": true,
+  "programs": true,
+  "cat:البرامج الدينية": true
+ },
+ "hide": {
+  "list:PLAlF6DH_SSzU": true
+ }
+}
