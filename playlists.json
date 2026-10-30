@@ -1,6 +1,6 @@
 {
   "channelId": "UCBckgHr1PZLl1SML8eCWoIA",
-  "syncedAt": "2026-10-30T13:17:28.284Z",
+  "syncedAt": "2026-10-30T19:06:37.877Z",
   "playlists": [
     {
       "playlistId": "PLAlF6DH_SSzU",
@@ -12,7 +12,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1000
+      "order": 1001
     },
     {
       "playlistId": "PLa2gxXL2I8nc",
@@ -24,7 +24,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1001
+      "order": 1002
     },
     {
       "playlistId": "PLRLQzFjpfWu8",
@@ -36,7 +36,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1002
+      "order": 1003
     },
     {
       "playlistId": "PLbf1KySrygAc",
@@ -48,7 +48,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1003
+      "order": 1004
     },
     {
       "playlistId": "PL9Hi8v96O4Nm03KwjoO7VKBqqnJQSPyqI",
@@ -60,7 +60,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1004
+      "order": 1005
     },
     {
       "playlistId": "PL9Hi8v96O4NnKICyeqJHvUBPUJQLzdQgL",
@@ -72,7 +72,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1005
+      "order": 1006
     },
     {
       "playlistId": "PL9Hi8v96O4Nl75dbc-DQ9r8UqEO96EMzT",
@@ -84,7 +84,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1006
+      "order": 1007
     },
     {
       "playlistId": "PL9Hi8v96O4Nkn1u727oAjpZfiid-PAj-T",
@@ -96,7 +96,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1007
+      "order": 1008
     },
     {
       "playlistId": "PL9Hi8v96O4Nl0yO1pZzDlSUwZain7chJh",
@@ -108,7 +108,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1008
+      "order": 1009
     },
     {
       "playlistId": "PL9Hi8v96O4Nmn7EAHnGu3UoqOXbuGHEiJ",
@@ -120,7 +120,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1009
+      "order": 1010
     },
     {
       "playlistId": "PL9Hi8v96O4Nl17JmoIOly0B7O_6G2MrUL",
@@ -132,7 +132,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1010
+      "order": 1011
     },
     {
       "playlistId": "PL9Hi8v96O4NlIIdoQY5LhsPK8huOPCVqT",
@@ -144,7 +144,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1011
+      "order": 1012
     },
     {
       "playlistId": "PL9Hi8v96O4NkdN6Rny-YRxJwiom9ZpoSq",
@@ -156,7 +156,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1012
+      "order": 1013
     },
     {
       "playlistId": "PL9Hi8v96O4NnVChz7VfBcwIp3PL1jHoCt",
@@ -168,7 +168,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1013
+      "order": 1014
     },
     {
       "playlistId": "PL9Hi8v96O4NkCwBrpJqo4rRY-_QnlnAhe",
@@ -180,7 +180,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1014
+      "order": 1015
     },
     {
       "playlistId": "PL9Hi8v96O4NlXSvYRCvraJn_DaVdmj-o9",
@@ -192,7 +192,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1015
+      "order": 1016
     },
     {
       "playlistId": "PL9Hi8v96O4NkmcEjFM7rRcb0AV2bdP7iT",
@@ -204,7 +204,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1016
+      "order": 1017
     },
     {
       "playlistId": "PL9Hi8v96O4NlcvqEmzUtFZcJc-pok4bE8",
@@ -216,7 +216,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1017
+      "order": 1018
     },
     {
       "playlistId": "PL9Hi8v96O4NmNz_T6a4a05BI-bRz4SWDJ",
@@ -228,7 +228,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1018
+      "order": 1019
     },
     {
       "playlistId": "PL9Hi8v96O4Nl6cBulAg8JkRFWVYa8CNsC",
@@ -240,7 +240,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1019
+      "order": 1020
     },
     {
       "playlistId": "PL9Hi8v96O4NnH3v_mAIuldfE1VNVQb1hq",
@@ -252,7 +252,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1020
+      "order": 1021
     },
     {
       "playlistId": "PL9Hi8v96O4NkxvalhhBo9ROE6_VrlvEq4",
@@ -264,7 +264,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1021
+      "order": 1022
     },
     {
       "playlistId": "PL9Hi8v96O4NlgJ504RKU84u8hZhrv28jV",
@@ -276,7 +276,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1022
+      "order": 1023
     },
     {
       "playlistId": "PL9Hi8v96O4Nkg5vbjeNTTP3AqtdSI7nN_",
@@ -288,7 +288,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1023
+      "order": 1024
     },
     {
       "playlistId": "PL9Hi8v96O4Nml4SYzsraQoQnR_aM2uyjB",
@@ -300,7 +300,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1024
+      "order": 1025
     },
     {
       "playlistId": "PL9Hi8v96O4NnAcfjPMOMis5uDTDtwsBmS",
@@ -312,7 +312,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1025
+      "order": 1026
     },
     {
       "playlistId": "PL9Hi8v96O4NlBRmqW37A7h655laJYdCX_",
@@ -324,7 +324,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1026
+      "order": 1027
     },
     {
       "playlistId": "PL9Hi8v96O4NlDmMvXs1O2QU1qKIm9YLoZ",
@@ -336,7 +336,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1027
+      "order": 1028
     },
     {
       "playlistId": "PL9Hi8v96O4Nnhqrg_jniPC4Joqz45R-0d",
@@ -348,7 +348,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1028
+      "order": 1029
     },
     {
       "playlistId": "PL9Hi8v96O4Nnmv8aWKedVX8RZCdQaPxbA",
@@ -360,7 +360,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1029
+      "order": 1030
     },
     {
       "playlistId": "PL9Hi8v96O4Nld5X1OUcqxhfDLyh0KTOFi",
@@ -372,7 +372,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1030
+      "order": 1031
     },
     {
       "playlistId": "PL9Hi8v96O4NmBAzzsvYeqhGwEuNRGn3md",
@@ -384,7 +384,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1031
+      "order": 1032
     },
     {
       "playlistId": "PL9Hi8v96O4NnpbcOkLIwiwaGVRYJf7HM0",
@@ -396,7 +396,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1032
+      "order": 1033
     },
     {
       "playlistId": "PL9Hi8v96O4NniUNFtbLrAwtoCEfppexTr",
@@ -408,7 +408,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1033
+      "order": 1034
     },
     {
       "playlistId": "PL9Hi8v96O4NnFQPcS0pwXWPyElCsvADaI",
@@ -420,7 +420,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1034
+      "order": 1035
     },
     {
       "playlistId": "PL9Hi8v96O4NnEMFv59HUNIjw8UQrK-ezH",
@@ -432,7 +432,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1035
+      "order": 1036
     },
     {
       "playlistId": "PL9Hi8v96O4NmxIW2mFcEbrWKN-kO0ZOQJ",
@@ -444,7 +444,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1036
+      "order": 1037
     },
     {
       "playlistId": "PL9Hi8v96O4NlbPSsULRP-tyQ0OB5iHX5k",
@@ -456,7 +456,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1037
+      "order": 1038
     },
     {
       "playlistId": "PL9Hi8v96O4NkZsjZ9UbuoaDXYUQqzVNeR",
@@ -468,7 +468,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1038
+      "order": 1039
     },
     {
       "playlistId": "PL9Hi8v96O4NkkKJgmd-V0tdGSitENfmyV",
@@ -480,7 +480,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1039
+      "order": 1040
     },
     {
       "playlistId": "PL9Hi8v96O4Nkp1EV7b2RqZw_-OlrhYfId",
@@ -492,7 +492,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1040
+      "order": 1041
     },
     {
       "playlistId": "PL9Hi8v96O4NmGJ-nGVyd1TQepyklo15de",
@@ -504,7 +504,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1041
+      "order": 1042
     },
     {
       "playlistId": "PL9Hi8v96O4Nne-KTPIERbfjSNdxxFM1Mr",
@@ -516,7 +516,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1042
+      "order": 1043
     },
     {
       "playlistId": "PL9Hi8v96O4NmSYo7KpBDIlnA3GyG5u2zn",
@@ -528,7 +528,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1043
+      "order": 1044
     },
     {
       "playlistId": "PL9Hi8v96O4NlIcWBKNMVN-mIGcPbImY16",
@@ -540,7 +540,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1044
+      "order": 1045
     },
     {
       "playlistId": "PL9Hi8v96O4Nnejq6D7evd69PFS4p9_Us_",
@@ -552,7 +552,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1045
+      "order": 1046
     },
     {
       "playlistId": "PL9Hi8v96O4NmWMumUgpzc1-aF4LHaKWOO",
@@ -564,7 +564,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1046
+      "order": 1047
     },
     {
       "playlistId": "PL9Hi8v96O4NlN1nohnFgODibT1elhROxc",
@@ -576,7 +576,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1047
+      "order": 1048
     },
     {
       "playlistId": "PL9Hi8v96O4Nk3gxqCs-UEKwj1vYx5GklB",
@@ -588,7 +588,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1048
+      "order": 1049
     },
     {
       "playlistId": "PL9Hi8v96O4NnkPbqKZULC-ZqntUOoLyoT",
@@ -600,7 +600,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1049
+      "order": 1050
     },
     {
       "playlistId": "PL9Hi8v96O4NkBSpzGPeZ2cFS2Wh0MJSt5",
@@ -612,7 +612,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1050
+      "order": 1051
     },
     {
       "playlistId": "PL9Hi8v96O4Nkw9WLgF5IAy4StiLyk5caK",
@@ -624,7 +624,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1051
+      "order": 1052
     },
     {
       "playlistId": "PL9Hi8v96O4Nk-vJgw9zAkT8c7A6rbsNxO",
@@ -636,7 +636,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1052
+      "order": 1053
     },
     {
       "playlistId": "PL9Hi8v96O4NnTksIYqSmnIEks9HvshT17",
@@ -648,7 +648,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1053
+      "order": 1054
     },
     {
       "playlistId": "PL9Hi8v96O4NkFRBb81DJ33vKNyQ4Xt_H_",
@@ -660,7 +660,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1054
+      "order": 1055
     },
     {
       "playlistId": "PL9Hi8v96O4NmLSA1vs2Gj7oUmHlInHTVw",
@@ -672,7 +672,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1055
+      "order": 1056
     },
     {
       "playlistId": "PL9Hi8v96O4NnJZnUjSAKee1x8ReNCZh_i",
@@ -684,7 +684,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1056
+      "order": 1057
     },
     {
       "playlistId": "PL9Hi8v96O4NmeRt4gny-03v41hwHmma-w",
@@ -696,7 +696,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1057
+      "order": 1058
     },
     {
       "playlistId": "PL9Hi8v96O4NlsDSn57Itf9K8-3OJStOZ3",
@@ -708,7 +708,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1058
+      "order": 1059
     },
     {
       "playlistId": "PL9Hi8v96O4Nn-vjBIHh-If9r5FZmeQCDp",
@@ -792,7 +792,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1065
+      "order": 1066
     },
     {
       "playlistId": "PL9Hi8v96O4NkkfaREasFcLag96Bepqr9o",
@@ -804,7 +804,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1066
+      "order": 1067
     },
     {
       "playlistId": "PL9Hi8v96O4NmVB-A9BCg9-KU9KKm5h7OE",
@@ -816,7 +816,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1067
+      "order": 1068
     },
     {
       "playlistId": "PL9Hi8v96O4Nl7B0BHQe96OPwN-TCfvz7G",
@@ -828,7 +828,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1068
+      "order": 1069
     },
     {
       "playlistId": "PL9Hi8v96O4NmXd5l0oyG1MPJvEgubGi5f",
@@ -840,7 +840,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1069
+      "order": 1070
     },
     {
       "playlistId": "PL9Hi8v96O4NliED3TG4H4K0rjgfHtJxzQ",
@@ -852,7 +852,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1070
+      "order": 1071
     },
     {
       "playlistId": "PL9Hi8v96O4NlvQ7KhL_rE16EH6LnXJlxT",
@@ -864,7 +864,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1071
+      "order": 1072
     },
     {
       "playlistId": "PL9Hi8v96O4Nn_ai-PFQaYhS6NJcPwf_8F",
@@ -876,7 +876,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1072
+      "order": 1073
     },
     {
       "playlistId": "PL9Hi8v96O4Nk_FE4E_6pglG9HJOa1UwvR",
@@ -888,7 +888,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1073
+      "order": 1074
     },
     {
       "playlistId": "PL9Hi8v96O4NnVXCnBQbKGZBLZhJEBIbIB",
@@ -924,7 +924,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1076
+      "order": 1077
     },
     {
       "playlistId": "PL9Hi8v96O4NnbubqhauuEFF3QymAADVpW",
@@ -936,7 +936,7 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1077
+      "order": 1078
     },
     {
       "playlistId": "PL9Hi8v96O4Nn71FXPCXlj__RIDMLbLQWy",
@@ -948,7 +948,19 @@
       "section": null,
       "hidden": false,
       "missing": false,
-      "order": 1078
+      "order": 1079
+    },
+    {
+      "order": 1000,
+      "playlistId": "PLGZLYPDSN2Nc",
+      "title": "الدورة التعليمة 21 بمسجد التقوى بعيديد - تريم",
+      "description": "",
+      "thumbnail": "https://i.ytimg.com/vi/r7s0Qqtxum8/maxresdefault.jpg?v=7",
+      "videoCount": 1,
+      "playlistUrl": "https://www.youtube.com/playlist?list=PLGZLYPDSN2Nc",
+      "section": null,
+      "hidden": false,
+      "missing": false
     }
   ]
 }
