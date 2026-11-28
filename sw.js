@@ -1,3 +1,4 @@
+importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
 // Service worker: offline shell only. Never caches API/YouTube/GitHub requests.
 const V="alghanna-v2",SHELL=["./","icon-192.png","icon-512.png","favicon.png"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()))});
