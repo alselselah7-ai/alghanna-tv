@@ -1,0 +1,263 @@
+/* تصميم الجوال: شريط تنقل سفلي، بث مباشر بشاشة كاملة، مشاركة واتساب، جودة منخفضة. لا يؤثر على سطح المكتب. */
+(function(){
+var MQ=matchMedia("(max-width:820px)");
+var css="@media(max-width:820px){"
++":root{--hh:58px;--nv:64px}"
++"html{scroll-padding-top:70px}body,body.adm{padding-bottom:calc(var(--nv) + env(safe-area-inset-bottom,0px) + 10px)}"
++"header{min-height:var(--hh);height:var(--hh);flex-wrap:nowrap;gap:8px;padding:6px 12px}"
++"header .pill,header>a.btn,#auth{display:none!important}"
++".brand img{height:38px}.brand b{font-size:16px}.brand small{font-size:11px}"
++".round{height:38px;min-width:38px;justify-content:center;padding:0 12px}"
++".mct{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--ln);background:rgba(255,255,255,.07);color:#fff}.mct svg{width:18px;height:18px}"
++".hero{min-height:62vh;max-height:560px}.sl .in{bottom:16%;max-width:92%;inset-inline-start:5%}.sl h2{font-size:27px;margin-bottom:10px}.sl .btn{height:48px;padding:0 26px;font-size:17px;border-radius:999px}.dots{bottom:5%;inset-inline-start:5%}.kick{font-size:14px}"
++".mlive{display:flex;align-items:center;gap:12px;margin:-6px 4% 6px;padding:14px 16px;border-radius:16px;background:linear-gradient(135deg,#0d4a3a,#07201a);border:1px solid var(--ac);position:relative;z-index:5;box-shadow:0 6px 24px rgba(0,0,0,.4)}"
++".mlive .d{width:12px;height:12px;border-radius:50%;background:#ff4d4d;box-shadow:0 0 0 0 rgba(255,77,77,.7);animation:mp 1.6s infinite}@keyframes mp{70%{box-shadow:0 0 0 12px rgba(255,77,77,0)}100%{box-shadow:0 0 0 0 rgba(255,77,77,0)}}"
++".mlive b{display:block;font-size:18px;line-height:1.2}.mlive small{color:var(--mu);font-size:13px}.mlive span.g{margin-inline-start:auto;background:var(--ac);color:var(--ac-tx);font-weight:800;padding:9px 18px;border-radius:999px;font-size:15px}"
++".sec{padding:18px 0}.sec h2{font-size:19px;margin-bottom:10px}.sec h2 button{font-size:14px;padding:8px 0}"
++".track{gap:12px;padding-bottom:8px}.card{width:min(62vw,250px)}.card b{font-size:15px;margin-top:8px}.card small{font-size:12.5px}"
++".track.all{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 10px;overflow:visible}.track.all .card{width:100%}"
++".im{border-radius:12px}.im::after{content:'\\25B6';inset:auto;bottom:8px;inset-inline-end:8px;width:34px;height:34px;border-radius:50%;font-size:13px;opacity:1;background:rgba(3,32,21,.72);border:1px solid rgba(255,255,255,.25)}.card:hover .im img{transform:none}"
++".page{min-height:50vh}.sbox{margin:16px 4% 8px}.sbox input{height:50px;font-size:16px}"
++".info{margin:16px 4% 0;gap:20px;padding-top:20px}.info a{padding:10px 0;font-size:16px}footer{margin:18px 4% 0;font-size:13px}"
++"#dlg[open]{display:flex;flex-direction:column;width:100vw;height:100dvh;max-width:none;max-height:none;border-radius:0;background:#05140f}"
++"#dlg .dh{padding:10px 12px;gap:8px}#dlg .dh span{flex:1;font-size:15px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}#dlg .dh button{min-width:40px;height:40px}"
++"#dlg .fr{width:100%;flex:none}#dlg .dn{padding:14px 16px;font-size:15px}#dlg .dn a{display:inline-block;padding:10px 0}"
++".wab{background:#25d366!important;color:#032015!important;border-radius:999px!important;font:700 14px var(--f)!important;padding:0 14px!important;height:36px!important;display:inline-flex;align-items:center;gap:6px;font-size:14px!important}"
++"#ab{bottom:calc(var(--nv) + env(safe-area-inset-bottom,0px));padding:8px 3%}"
++"#ed{width:100vw;max-width:none;margin:auto 0 0;border-radius:18px 18px 0 0;max-height:90dvh;overflow:auto}#ed input,#ed select{height:48px;font-size:16px}#ed .btn{height:46px}"
+/* شريط التنقل السفلي */
++"#mnav{position:fixed;inset-inline:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(5,1fr);align-items:end;height:calc(var(--nv) + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);background:rgba(5,20,15,.96);backdrop-filter:blur(12px);border-top:1px solid var(--ln)}"
++"#mnav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:var(--nv);color:#9fb9ae;font-size:11.5px;font-weight:500;-webkit-tap-highlight-color:transparent}"
++"#mnav a svg{width:24px;height:24px}#mnav a.on{color:var(--ac)}#mnav a.on span{font-weight:700}"
++"#mnav a.lv2{color:#fff}#mnav a.lv2 i{display:flex;align-items:center;justify-content:center;width:54px;height:54px;margin-top:-22px;border-radius:50%;background:var(--ac);color:var(--ac-tx);border:4px solid #05140f;box-shadow:0 4px 16px rgba(40,200,120,.45)}#mnav a.lv2 i svg{width:26px;height:26px}#mnav a.lv2 span{margin-top:-2px}"
+/* البث بشاشة كاملة (عمودي أولاً، والتدوير اختياري) */
+/* فلتر البحث */
++"#sbx.page{min-height:0}.mf{margin:4px 4% 0}.mf .r{display:flex;gap:8px;overflow-x:auto;padding:4px 0;scrollbar-width:none}.mf .r::-webkit-scrollbar{display:none}"
++".mf .r b{flex:none;align-self:center;font-size:13px;color:var(--mu);font-weight:600}"
++".mf button{flex:none;height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--ln);background:rgba(255,255,255,.07);color:#fff;font:600 14px var(--f);cursor:pointer}.mf button.on{background:var(--ac);color:var(--ac-tx);border-color:var(--ac)}"
++".mf .c{font-size:13px;color:var(--mu);margin:2px 0 0}"
++"}"
+/* قصّ إطار المزوّد: صفحته بعرض 980، البانر 70px والفيديو 852x480 بالمنتصف */
+
+/* خارج الجوال: إخفاء عناصر الجوال */
++"@media(min-width:821px){#mnav,#mlbar,#mlfl,.mlive,.mct,.mf,#mtoast{display:none!important}}";
+/* شاشة البث الكاملة: مرتبطة بحالة body.inlive لا بعرض الشاشة، حتى لا تنهار عند تدوير الجوال نفسه (العرض الأفقي يتجاوز 820) */
+var css2="body.inlive{overflow:hidden}"
++"body.inlive #mnav{display:none}body.inlive #live{z-index:70;padding:0}"
++"body.inlive #lb{position:fixed;inset:0;z-index:70;margin:0;padding:0;border:0;border-radius:0;background:#000;display:block}"
++"body.inlive #lb .lt,body.inlive #lb .lvx{display:none}body.inlive #lb .lv{position:absolute;inset:0;overflow:hidden;background:#000;border-radius:0;aspect-ratio:auto}"
++"body.inlive #lb .lv iframe{position:absolute;border:0;width:980px;height:760px;max-width:none;transform-origin:0 0;clip-path:inset(68px 64px 212px 64px)}"
++"body.inlive #lb .lvl{position:absolute;inset-inline:0;bottom:0;height:40px;padding:9px;background:rgba(5,20,15,.92);z-index:3;font-size:13px}"
++"body.inlive #mlbar{display:flex!important;position:absolute;top:0;inset-inline:0;z-index:5;height:calc(54px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 8px 0;align-items:center;gap:6px;background:#05140f;border-bottom:1px solid var(--ln)}"
++"body.inlive #mlbar button{height:38px;min-width:38px;border-radius:999px;border:1px solid var(--ln);background:rgba(255,255,255,.1);color:#fff;font:600 13px var(--f);padding:0 12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px}"
++"body.inlive #mlbar button.on{background:var(--ac);color:var(--ac-tx);border-color:var(--ac)}body.inlive #mlbar button.wab{border:0}body.inlive #mlbar button.rot{background:var(--ac);color:var(--ac-tx);border-color:var(--ac);font-weight:800}"
++"body.inlive #mlbar .t{flex:1;display:flex;align-items:center;gap:7px;font-weight:700;font-size:15px;min-width:0}body.inlive #mlbar .t i{width:9px;height:9px;border-radius:50%;background:#ff4d4d;flex:none}"
++"#mtoast{position:fixed;inset-inline:12px;bottom:calc(var(--nv) + env(safe-area-inset-bottom,0px) + 12px);z-index:90;background:#0b241d;border:1px solid var(--ac);color:#fff;padding:12px 14px;border-radius:12px;font-size:14px;text-align:center}"
++"body.inlive #lb.land #mlbar,body.inlive #lb.land .lvl{display:none!important}"
++"body.inlive #mlfl{display:none!important;position:absolute;top:calc(10px + env(safe-area-inset-top,0px));inset-inline-start:10px;z-index:6;gap:8px}body.inlive #lb.land #mlfl{display:flex!important}"
++"body.inlive #mlfl button{height:42px;min-width:42px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font:700 14px var(--f);cursor:pointer}"
++"body.inlive #lb.rot{inset:auto;top:0;left:0;width:100vh;height:100vw;transform-origin:0 0;transform:translateX(100vw) rotate(90deg);width:100dvh;height:100dvw;transform:translateX(100dvw) rotate(90deg)}";
+var st=document.createElement("style");st.textContent=css+css2;document.head.appendChild(st);
+
+function g(i){return document.getElementById(i)}
+function tr(k,d){try{var v=T(k);return v&&v!==k?v:d}catch(e){return d}}
+var SITE="https://alghanna-tv.pages.dev/";
+function wa(text){return "https://wa.me/?text="+encodeURIComponent(text)}
+function share(text,url){var full=text+"\n"+url;
+ if(navigator.share){navigator.share({text:text,url:url}).catch(function(){})}else window.open(wa(full),"_blank","noopener")}
+function toast(m){var t=g("mtoast");if(!t){t=document.createElement("div");t.id="mtoast";document.body.appendChild(t)}t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(function(){t.hidden=true},4000)}
+var IC={
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+ live:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+ prog:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+ browse:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
+ search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+ phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>'};
+var WA='<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.2 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.8-.1 1.4z"/></svg>';
+
+/* شريط التنقل السفلي */
+var nav=document.createElement("nav");nav.id="mnav";nav.setAttribute("aria-label","main");
+var ITEMS=[["home","home","home","الرئيسية"],["programs","prog","programs","برامج"],["live","live","liveTag","مباشر"],["browse","browse","browse","تصفح"],["search","search","search","البحث"]];
+ITEMS.forEach(function(x){var a=document.createElement("a");a.href="#"+x[0];a.dataset.k=x[0];if(x[0]==="live")a.className="lv2";
+ a.innerHTML=(x[0]==="live"?"<i>"+IC[x[1]]+"</i>":IC[x[1]])+"<span></span>";nav.appendChild(a)});
+document.body.appendChild(nav);
+function labels(){ITEMS.forEach(function(x,i){nav.children[i].querySelector("span").textContent=tr(x[2],x[3])});
+ var b=g("mlbT");if(b)b.textContent=tr("live","البث المباشر")}
+
+/* زر الاتصال في الرأس */
+var hd=document.querySelector("header"),lang=hd.querySelector(".lang");
+var ct=document.createElement("a");ct.className="mct";ct.href="#contact";ct.setAttribute("aria-label","contact");ct.innerHTML=IC.phone;hd.insertBefore(ct,lang);
+
+/* شريط البث المباشر على الرئيسية */
+var ml=document.createElement("a");ml.className="mlive";ml.href="#live";ml.dataset.r="home";
+ml.innerHTML='<i class="d"></i><div><b id="mlbT">البث المباشر</b><small>القناة على الهواء</small></div><span class="g">شاهد</span>';
+var hero=g("hero");hero.parentNode.insertBefore(ml,hero.nextSibling);
+/* شريط أعلى شاشة البث */
+var lb=g("lb"),bar=document.createElement("div");bar.id="mlbar";
+bar.innerHTML='<button type="button" id="mlb1" aria-label="back">&#10095;</button><div class="t"><i></i><span>مباشر</span></div><button type="button" id="mlq">جودة أقل</button><button type="button" class="rot" id="mlr" aria-label="rotate">&#10227; تدوير</button><button type="button" class="wab" id="mlw" aria-label="whatsapp">'+WA+'</button>';
+lb.insertBefore(bar,lb.firstChild);
+var fl=document.createElement("div");fl.id="mlfl";fl.innerHTML='<button type="button" id="mlr2">&#10227; عمودي</button>';lb.appendChild(fl);
+
+var prev=null,cur=location.hash;
+window.addEventListener("hashchange",function(){prev=cur;cur=location.hash;sync()});
+g("mlb1").onclick=function(){if(mode==="land"){exitLand(false);return}if(prev&&prev!=="#live")history.back();else location.replace("#home")};
+g("mlw").onclick=function(){share("قناة الغنّاء المحلية بتريم، البث المباشر الآن",SITE+"#live")};
+/* وضع البث: عمودي (الافتراضي) أو أفقي (زر التدوير). التدوير بالـCSS فقط: لا قفل اتجاه ولا اعتماد على حالة ملء الشاشة، فيثبت مهما فعل المتصفح */
+var mode="portrait";
+function inFS(){return !!(document.fullscreenElement||document.webkitFullscreenElement)}
+function reqFS(){var d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;if(!f)return Promise.resolve();
+ try{var p=f.call(d);return p&&p.then?p.catch(function(){}):Promise.resolve()}catch(x){return Promise.resolve()}}
+function exitFS(){var f=document.exitFullscreen||document.webkitExitFullscreen;if(f&&inFS()){try{var p=f.call(document);if(p&&p.catch)p.catch(function(){})}catch(x){}}}
+function applyRot(){if(mode!=="land")return;lb.classList.toggle("rot",innerHeight>=innerWidth);fitFS()}
+function enterLand(){if(mode==="land")return;mode="land";lb.classList.add("land");
+ try{history.pushState({mland:1},"")}catch(x){}
+ applyRot();setTimeout(applyRot,60);setTimeout(applyRot,350)}
+function exitLand(fromPop){if(mode!=="land")return;mode="portrait";lb.classList.remove("land","rot");
+ if(!fromPop&&history.state&&history.state.mland){try{history.back()}catch(x){}}
+ setTimeout(fitFS,50);setTimeout(fitFS,300)}
+function liveFS(){if(!MQ.matches)return;reqFS()}
+document.addEventListener("click",function(e){if(!MQ.matches)return;var t=e.target,tA=t&&t.closest?t.closest('a[href="#live"]'):null;if(!tA)return;
+ if(inFS())return;liveFS()},true);
+g("mlr").onclick=enterLand;g("mlr2").onclick=function(){exitLand(false)};
+addEventListener("popstate",function(){if(mode==="land"&&!(history.state&&history.state.mland))exitLand(true)});
+function goHome(){if(prev&&prev!=="#live")history.back();else location.replace("#home")}
+["fullscreenchange","webkitfullscreenchange"].forEach(function(n){document.addEventListener(n,function(){
+ if(inFS()||!MQ.matches||location.hash!=="#live")return;
+ /* خروج من ملء الشاشة: في وضع التدوير لا نفعل شيئاً أبداً (الخروج يكون بزر "عمودي" أو الرجوع فقط)، وفي العمودي نرجع للرئيسية */
+ if(mode!=="land")goHome()})});
+/* قصّ: صفحة المزوّد تُعرض بعرض 980 ثم تُكبَّر بحيث يملأ الفيديو (852x480 عند 64,68) المساحة المتاحة */
+function fitFS(){var f=document.querySelector("#lv iframe"),v=g("lv");if(!f||!v)return;if(mode!=="land")lb.classList.remove("rot");
+ if(!document.body.classList.contains("inlive")){f.style.transform=f.style.left=f.style.top="";return}
+ var W=v.clientWidth,H=v.clientHeight;if(!W||!H)return;var k=Math.min(W/852,H/480);
+ f.style.transform="scale("+k+")";f.style.left=(W/2-490*k)+"px";f.style.top=(H/2-308*k)+"px"}
+["resize","orientationchange"].forEach(function(n){addEventListener(n,function(){setTimeout(applyRot,60);setTimeout(fitFS,60);setTimeout(applyRot,400)})});
+new MutationObserver(function(){fitFS()}).observe(g("lv"),{childList:true});
+
+/* جودة منخفضة (HLS بأقل مستوى). عند الفشل نرجع للبث الأساسي */
+var lowQ=false,mh=null,ltok=0;
+function killLow(){ltok++;if(mh){try{mh.destroy()}catch(e){}mh=null}}
+function normalLive(){killLow();lowQ=false;g("mlq").classList.remove("on");if(typeof startLive==="function")startLive()}
+function lowLive(){if(typeof stopLive==="function")stopLive();killLow();var tok=ltok,box=g("lv");lb.classList.add("playing");
+ var v=document.createElement("video");v.controls=true;v.autoplay=true;v.muted=false;v.playsInline=true;v.style.cssText="width:100%;height:100%;background:#000";box.appendChild(v);
+ var fail=function(){if(tok!==ltok)return;toast("الجودة المنخفضة غير متاحة الآن، رجعنا للبث العادي");normalLive()};
+ var go=function(){if(tok!==ltok)return;if(window.Hls&&Hls.isSupported()){mh=new Hls({startLevel:0,autoStartLoad:true,capLevelToPlayerSize:true});
+   mh.on(Hls.Events.MANIFEST_PARSED,function(){mh.autoLevelCapping=0;mh.currentLevel=0;var p=v.play();if(p&&p.catch)p.catch(function(){})});
+   mh.on(Hls.Events.ERROR,function(e,d){if(d&&d.fatal)fail()});mh.loadSource(LIVE_HLS);mh.attachMedia(v);setTimeout(function(){if(tok===ltok&&v.readyState===0)fail()},9000)}
+  else if(v.canPlayType("application/vnd.apple.mpegurl")){v.src=LIVE_HLS}else fail()};
+ if(window.Hls)go();else{var s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/hls.js@1.5.8/dist/hls.min.js";s.onload=go;s.onerror=fail;document.head.appendChild(s)}}
+g("mlq").onclick=function(){lowQ=!lowQ;this.classList.toggle("on",lowQ);if(lowQ){toast("جودة منخفضة: توفير للإنترنت");lowLive()}else normalLive()};
+
+/* زر مشاركة في نافذة الفيديو */
+var dh=document.querySelector("#dlg .dh"),dx=g("dx"),sb=document.createElement("button");sb.type="button";sb.className="wab";sb.innerHTML=WA+" مشاركة";
+sb.onclick=function(){share((g("dt").textContent||"قناة الغنّاء")+" | قناة الغنّاء المحلية بتريم",g("dl").href)};dh.insertBefore(sb,dx);
+var sbShow=function(){sb.style.display=MQ.matches?"":"none"};
+
+/* فلتر البحث: حسب القسم والترتيب (الأحدث / الأكثر مشاهدة) */
+var fcat="",fsort="";
+var sbx=g("sbx"),qEl=g("q"),mf=document.createElement("div");mf.className="mf";sbx.appendChild(mf);
+var SORTS=[["new","الأحدث"],["old","الأقدم"],["views","الأكثر مشاهدة"]];
+function pool(){var rows=ROWS.filter(function(r){return r.k!=="lives"&&!r.hidden});var all=[];rows.forEach(function(r){r.items.forEach(function(i){all.push(i)})});return uniq(all)}
+function cats(){return ROWS.filter(function(r){return r.k!=="lives"&&r.k!=="latest"&&r.k!=="top"&&!r.hidden&&r.items.length})}
+function chip(row,label,on,fn){var b=document.createElement("button");b.type="button";b.textContent=label;if(on)b.className="on";b.onclick=fn;row.appendChild(b)}
+function mfRender(){
+ if(!MQ.matches||(location.hash||"")!=="#search")return;
+ mf.innerHTML="";
+ var r1=document.createElement("div");r1.className="r";var lb1=document.createElement("b");lb1.textContent="ترتيب";r1.appendChild(lb1);
+ SORTS.forEach(function(x){chip(r1,x[1],fsort===x[0],function(){fsort=fsort===x[0]?"":x[0];mfRender()})});
+ var r2=document.createElement("div");r2.className="r";var lb2=document.createElement("b");lb2.textContent="القسم";r2.appendChild(lb2);
+ chip(r2,"الكل",!fcat,function(){fcat="";mfRender()});
+ var cs=cats();cs.forEach(function(r){chip(r2,rowTitle(r),fcat===r.key,function(){fcat=fcat===r.key?"":r.key;mfRender()})});
+ mf.appendChild(r1);mf.appendChild(r2);
+ var cnt=document.createElement("div");cnt.className="c";mf.appendChild(cnt);
+ var q=norm(qEl.value.trim()),box=g("rows");
+ if(!q&&!fcat&&!fsort){box.innerHTML="";return}
+ var items=pool();
+ if(fcat){var row=cs.filter(function(r){return r.key===fcat})[0];var ids={};if(row)row.items.forEach(function(i){ids[ikey(i)]=1});items=items.filter(function(i){return ids[ikey(i)]})}
+ if(q)items=items.filter(function(i){return norm(i.t+" "+(i.pt||"")).indexOf(q)>-1});
+ var vw={};ROWS.forEach(function(r){r.items.forEach(function(i){if(i.w!=null)vw[ikey(i)]=i.w})});
+ if(fsort==="new")items.sort(function(a,b){return (b.at||"").localeCompare(a.at||"")});
+ else if(fsort==="old")items.sort(function(a,b){if(!a.at)return 1;if(!b.at)return -1;return a.at.localeCompare(b.at)});
+ else if(fsort==="views")items.sort(function(a,b){return (vw[ikey(b)]||0)-(vw[ikey(a)]||0)});
+ var tot=items.length;items=items.slice(0,120);box.innerHTML="";
+ if(!items.length){box.innerHTML="<p class='empty'></p>";box.firstChild.textContent=T("noRes");cnt.textContent="";return}
+ cnt.textContent=tot+" نتيجة"+(fsort==="views"?" (المشاهدات متوفرة لبعض الفيديوهات فقط)":"");
+ var s=document.createElement("section");s.className="sec";s.innerHTML="<div class='rail'><div class='track all'></div></div>";var tr=s.querySelector(".track");
+ items.forEach(function(i){tr.appendChild(card(i,null))});box.appendChild(s)}
+var mft;qEl.addEventListener("input",function(e){if(!MQ.matches)return;e.stopImmediatePropagation();clearTimeout(mft);mft=setTimeout(mfRender,200)},true);
+window.addEventListener("hashchange",function(){mfRender()});
+new MutationObserver(function(){setTimeout(mfRender,0)}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+
+/* تنبيه عدم الاتصال */
+addEventListener("offline",function(){toast("أنت غير متصل بالإنترنت. بعض المحتوى قد لا يظهر")});
+addEventListener("online",function(){toast("رجع الاتصال")});
+
+function sync(){var h=(location.hash||"#home").slice(1);if(["home","live","programs","courses","movies","browse","contact","search"].indexOf(h)<0)h="home";
+ var on=h==="live"&&(MQ.matches||(document.body.classList.contains("inlive")&&matchMedia("(pointer:coarse)").matches));document.body.classList.toggle("inlive",on);
+ if(!on){if(mode==="land"){mode="portrait";lb.classList.remove("land","rot")}exitFS()}
+ setTimeout(fitFS,30);
+ if(h!=="live"&&(lowQ||mh)){killLow();lowQ=false;g("mlq").classList.remove("on")}
+ Array.prototype.forEach.call(nav.children,function(a){var k=a.dataset.k;a.classList.toggle("on",k===h||(k==="browse"&&(h==="courses"||h==="movies")))});
+ sbShow()}
+MQ.addEventListener?MQ.addEventListener("change",sync):MQ.addListener(sync);
+new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+labels();sync();mfRender();
+})();
+
+/* الإشعارات (OneSignal): الجرس يفتح صندوق الإشعارات، والاشتراك تلقائي بعد السماح */
+(function(){
+var APP="02173c89-7ed7-4028-b09d-308822d8b492";
+window.OneSignalDeferred=window.OneSignalDeferred||[];
+var s=document.createElement("script");s.src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";s.defer=true;document.head.appendChild(s);
+var hd=document.querySelector("header");if(!hd)return;
+var b=document.createElement("button");b.type="button";b.className="mct";b.id="mbell";b.setAttribute("aria-label","الإشعارات");
+b.style.cursor="pointer";b.style.position="relative";
+b.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5-6.7V3a2 2 0 0 0-4 0v1.3A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>';
+var dot=document.createElement("span");dot.style.cssText="position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:#ff4d4d;display:none";b.appendChild(dot);
+var lang=hd.querySelector(".lang"),ct=hd.querySelector(".mct");
+hd.insertBefore(b,ct||lang||null);
+var items=[];
+function seen(){return +(localStorage.getItem("agNotifSeen")||0)}
+function paintDot(){var n=0,t=seen();for(var i=0;i<items.length;i++)if(items[i].t>t)n++;dot.style.display=n?"block":"none"}
+function load(){return fetch("/api/push?list=1&_="+Date.now()).then(function(r){return r.json()}).then(function(d){if(d&&d.ok&&d.items){items=d.items;paintDot()}return items}).catch(function(){return items})}
+function esc(x){var d=document.createElement("div");d.textContent=x==null?"":String(x);return d.innerHTML}
+function fmt(t){try{return new Date(t*1000).toLocaleString("ar",{dateStyle:"medium",timeStyle:"short"})}catch(e){return ""}}
+function closePanel(){var p=document.getElementById("npanel");if(p)p.remove()}
+function render(box){
+ if(!items.length){box.innerHTML='<div style="padding:40px 16px;text-align:center;opacity:.7">لا توجد إشعارات حتى الآن</div>';return}
+ box.innerHTML=items.map(function(n,i){return '<div data-i="'+i+'" style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.1);'+(n.url?'cursor:pointer':'')+'"><div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(n.title)+'</b>'+(n.t>seen()?'<span style="color:#ff4d4d">●</span>':'')+'</div><div style="margin-top:4px;opacity:.9;line-height:1.5">'+esc(n.message)+'</div><div style="margin-top:6px;font-size:12px;opacity:.6">'+esc(fmt(n.t))+'</div></div>'}).join("");
+ box.onclick=function(e){var el=e.target.closest("[data-i]");if(!el)return;var n=items[+el.getAttribute("data-i")];if(n&&n.url&&/^https:\/\//.test(n.url))location.href=n.url}
+}
+function openPanel(){
+ closePanel();
+ var p=document.createElement("div");p.id="npanel";p.dir="rtl";
+ p.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.55);display:flex;justify-content:center;align-items:flex-start;font-family:inherit";
+ p.innerHTML='<div style="margin-top:56px;width:min(440px,94vw);max-height:75vh;display:flex;flex-direction:column;background:#14171c;color:#fff;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,.5);overflow:hidden"><div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.12)"><b>الإشعارات</b><button type="button" id="nclose" aria-label="إغلاق" style="background:none;border:0;color:#fff;font-size:22px;cursor:pointer;line-height:1">×</button></div><div id="nbox" style="overflow:auto"><div style="padding:40px 16px;text-align:center;opacity:.7">جارٍ التحميل…</div></div></div>';
+ document.body.appendChild(p);
+ p.onclick=function(e){if(e.target===p)closePanel()};
+ document.getElementById("nclose").onclick=closePanel;
+ var box=document.getElementById("nbox");
+ load().then(function(){render(box);var m=0;for(var i=0;i<items.length;i++)if(items[i].t>m)m=items[i].t;if(m){localStorage.setItem("agNotifSeen",String(m));paintDot()}});
+}
+b.onclick=openPanel;
+load();setInterval(load,120000);
+/* الاشتراك تلقائيا: بمجرد السماح بالإشعارات من الجوال */
+OneSignalDeferred.push(async function(OS){
+ try{
+  await OS.init({appId:APP,notifyButton:{enable:false},allowLocalhostAsSecureOrigin:true});
+  if(!OS.Notifications.isPushSupported())return;
+  async function ensure(){try{if(Notification.permission==="granted"&&!OS.User.PushSubscription.optedIn)await OS.User.PushSubscription.optIn()}catch(e){}}
+  await ensure();
+  try{OS.Notifications.addEventListener("permissionChange",function(){ensure()})}catch(e){}
+  if(Notification.permission==="default"){
+   var asked=false;
+   var ask=async function(){if(asked)return;asked=true;try{await OS.Notifications.requestPermission();await ensure()}catch(e){}};
+   setTimeout(ask,4000);
+   /* لو منع المتصفح الطلب التلقائي، أول لمسة تطلب الإذن */
+   document.addEventListener("pointerup",function(){if(Notification.permission==="default"){asked=false;ask()}},{once:true});
+  }
+ }catch(e){}
+});
+})();
+
+/* تصميم على نمط تطبيقات البث (تجريبي) */
+(function(){var s=document.createElement("script");s.src="shahid.js?v=1";document.head.appendChild(s)})();

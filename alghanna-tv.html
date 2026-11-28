@@ -11,6 +11,7 @@
 <link rel="canonical" href="https://alghanna-tv.pages.dev/">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
+ <link rel="manifest" href="manifest.webmanifest"><script>if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("OneSignalSDKWorker.js").catch(()=>{}));</script>
 <meta property="og:type" content="website"><meta property="og:site_name" content="قناة الغنّاء المحلية بتريم">
 <meta property="og:title" content="قناة الغنّاء المحلية بتريم | ياتريم وأهلها | Alghanna TV"><meta property="og:description" content="الموقع الرسمي لقناة الغنّاء المحلية بتريم (Alghanna TV / alghannatv): بث مباشر ودروس ومجالس علمية وفعاليات من مدينة تريم بحضرموت، مع برنامج المرصد الأسبوعي وبرامج ودورات تعليمية وأفلام. ياتريم وأهلها.">
 <meta property="og:url" content="https://alghanna-tv.pages.dev/"><meta property="og:image" content="https://alghanna-tv.pages.dev/og-image.png"><meta property="og:locale" content="ar_AR">
@@ -139,7 +140,7 @@ header{height:auto;min-height:var(--hh);flex-wrap:wrap;gap:14px;padding-block:10
 #ed input,#ed select{display:block;width:100%;margin-top:5px;height:42px;border-radius:8px;border:1px solid var(--ln);background:rgba(255,255,255,.08);color:#fff;padding:0 12px;font:500 16px var(--f)}#ed select option{color:#000}
 #ed .eb{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}#ed .btn{height:40px;padding:0 18px;font-size:15px}
 </style>
-<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="theme.css"><script src="mobile.js" defer></script>
 </head>
 <body>
 <noscript><p>الموقع الرسمي لقناة الغنّاء المحلية بتريم (Alghanna TV / alghannatv): بث مباشر ودروس ومجالس علمية وفعاليات من مدينة تريم بحضرموت، مع برنامج المرصد الأسبوعي وبرامج ودورات تعليمية وأفلام. ياتريم وأهلها.</p><p><a href="https://www.youtube.com/@alghannachannel6146">YouTube</a> · <a href="https://www.facebook.com/alghannatv/">Facebook</a> · <a href="https://telegram.me/alghannaTV">Telegram</a></p></noscript>
@@ -425,9 +426,23 @@ async function saveGH(){var tk="";try{tk=localStorage.getItem("ghtoken")||""}cat
  catch(e){status("خطأ في الشبكة: "+e.message)}}
 function settings(){var t="";try{t=localStorage.getItem("ghtoken")||""}catch(e){}
  form("إعدادات الحفظ في GitHub",[{n:"tk",l:"توكن GitHub (يُحفظ في هذا المتصفح فقط)",v:t,p:"github_pat_..."}],[{l:"حفظ",fn:function(o){try{if(o.tk)localStorage.setItem("ghtoken",o.tk);else localStorage.removeItem("ghtoken")}catch(e){}status(o.tk?"حُفظ التوكن":"أُزيل التوكن")}},{l:"إلغاء",alt:1}]);$("ed").querySelector("input").type="password"}
+function pushNotify(){var tk="";try{tk=localStorage.getItem("ghtoken")||""}catch(e){}
+ if(!tk){status("أضف توكن GitHub من الإعدادات أولاً، ثم أعد المحاولة.");return}
+ form("إرسال إشعار للمشتركين",[{n:"t",l:"العنوان",v:"",p:"مثال: بث مباشر الآن"},{n:"m",l:"نص الإشعار",v:""},{n:"u",l:"رابط عند الضغط (اختياري)",v:"",p:"https://..."}],
+ [{l:"إرسال",fn:function(o){
+  if(!o.t||!o.m){status("أدخل العنوان والنص.");return false}
+  status("جارٍ إرسال الإشعار...");
+  fetch("/api/push",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tk},body:JSON.stringify({title:o.t,message:o.m,url:o.u})}).then(function(r){return r.json().catch(function(){return{}}).then(function(d){return{r:r,d:d}})}).then(function(x){var r=x.r,d=x.d;
+   if(r.ok&&d.ok)status("تم إرسال الإشعار"+(d.recipients!=null?" إلى "+d.recipients+" مشترك":"."));
+   else if(d.error==="no_token"||d.error==="bad_token")status("فشل التحقق من توكن GitHub. راجع الإعدادات.");
+   else if(d.error==="forbidden")status("التوكن لا يملك صلاحية الكتابة على المستودع.");
+   else if(d.error==="no_subscribers")status("لا يوجد مشتركون مفعّلون بعد. فعّل الجرس في التطبيق أولاً.");
+   else if(d.error==="server_not_configured")status("خدمة الإشعارات غير مهيأة على الخادم بعد.");
+   else status("فشل الإرسال ("+(d.error||r.status)+").")}).catch(function(e){status("خطأ في الشبكة: "+e.message)})}},
+ {l:"إلغاء",alt:1}])}
 function adminBar(){document.body.classList.add("adm");var b=document.createElement("div");b.id="ab";
- b.innerHTML="<b>وضع المدير</b><button type='button' class='btn' id='a1'>حفظ في GitHub</button><button type='button' class='btn alt' id='a2'>تنزيل الملف</button><button type='button' class='btn alt' id='a3'>الإعدادات</button><button type='button' class='btn alt' id='a4'>تراجع عن غير المحفوظ</button><span id='abs'></span>";
- document.body.appendChild(b);$("a1").onclick=saveGH;$("a2").onclick=downloadOV;$("a3").onclick=settings;$("a4").onclick=function(){location.reload()};
+ b.innerHTML="<b>وضع المدير</b><button type='button' class='btn' id='a1'>حفظ في GitHub</button><button type='button' class='btn' id='a5'>إشعار</button><button type='button' class='btn alt' id='a2'>تنزيل الملف</button><button type='button' class='btn alt' id='a3'>الإعدادات</button><button type='button' class='btn alt' id='a4'>تراجع عن غير المحفوظ</button><span id='abs'></span>";
+ document.body.appendChild(b);$("a1").onclick=saveGH;$("a5").onclick=pushNotify;$("a2").onclick=downloadOV;$("a3").onclick=settings;$("a4").onclick=function(){location.reload()};
  window.addEventListener("beforeunload",function(e){if(DIRTY){e.preventDefault();e.returnValue=""}})}
 async function loadOV(){var tk="";try{tk=localStorage.getItem("ghtoken")||""}catch(e){}
  var c=new AbortController(),to=setTimeout(function(){c.abort()},2500);
