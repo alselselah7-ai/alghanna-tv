@@ -202,3 +202,38 @@ MQ.addEventListener?MQ.addEventListener("change",sync):MQ.addListener(sync);
 new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
 labels();sync();mfRender();
 })();
+
+/* الإشعارات (OneSignal): زر جرس في الأعلى لتفعيل الإشعارات */
+(function(){
+var APP="02173c89-7ed7-4028-b09d-308822d8b492";
+window.OneSignalDeferred=window.OneSignalDeferred||[];
+var s=document.createElement("script");s.src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";s.defer=true;document.head.appendChild(s);
+var hd=document.querySelector("header");if(!hd)return;
+var b=document.createElement("button");b.type="button";b.className="mct";b.id="mbell";b.setAttribute("aria-label","الإشعارات");
+b.style.cursor="pointer";
+var ON='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5-6.7V3a2 2 0 0 0-4 0v1.3A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>';
+var OFF='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>';
+b.innerHTML=OFF;
+var lang=hd.querySelector(".lang"),ct=hd.querySelector(".mct");
+hd.insertBefore(b,ct||lang||null);
+function tt(m){var t=document.getElementById("mtoast");if(!t){t=document.createElement("div");t.id="mtoast";document.body.appendChild(t)}t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(function(){t.hidden=true},3500)}
+function paint(OS){var on=false;try{on=!!(OS.User.PushSubscription.optedIn)}catch(e){}b.innerHTML=on?ON:OFF;b.style.color=on?"#2ee59d":""}
+OneSignalDeferred.push(async function(OS){
+ try{
+  await OS.init({appId:APP,serviceWorkerPath:"sw.js",serviceWorkerParam:{scope:"/"},notifyButton:{enable:false},allowLocalhostAsSecureOrigin:true});
+  paint(OS);
+  try{OS.User.PushSubscription.addEventListener("change",function(){paint(OS)})}catch(e){}
+  b.onclick=async function(){
+   try{
+    if(!OS.Notifications.isPushSupported()){tt("جهازك أو متصفحك لا يدعم الإشعارات");return}
+    if(OS.User.PushSubscription.optedIn){await OS.User.PushSubscription.optOut();tt("تم إيقاف الإشعارات");paint(OS);return}
+    if(OS.Notifications.permission===false&&Notification.permission==="denied"){tt("الإشعارات محظورة: فعّلها من إعدادات المتصفح للموقع");return}
+    await OS.Notifications.requestPermission();
+    if(!OS.User.PushSubscription.optedIn&&Notification.permission==="granted")await OS.User.PushSubscription.optIn();
+    paint(OS);
+    tt(OS.User.PushSubscription.optedIn?"تم تفعيل الإشعارات":"لم يتم تفعيل الإشعارات")
+   }catch(e){tt("تعذّر تفعيل الإشعارات")}
+  };
+ }catch(e){b.onclick=function(){tt("الإشعارات غير متاحة الآن")}}
+});
+})();
