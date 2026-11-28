@@ -62,6 +62,31 @@ export async function onRequestPost(context) {
   return json({ ok: true, id: res.data.id || null, recipients: res.data.recipients != null ? res.data.recipients : null });
 }
 
-export async function onRequestGet() {
-  return json({ ok: false, error: "method_not_allowed" }, 405);
+// Public inbox: recent notifications sent through OneSignal (title, text, time, link).
+export async function onRequestGet(context) {
+  const { env } = context;
+  if (!env.ONESIGNAL_REST_API_KEY) return json({ ok: false, error: "server_not_configured" }, 500);
+  try {
+    const r = await fetch("https://api.onesignal.com/notifications?app_id=" + APP_ID + "&limit=30", {
+      headers: { Authorization: "Key " + env.ONESIGNAL_REST_API_KEY }
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !Array.isArray(d.notifications)) return json({ ok: false, error: "list_failed" }, 502);
+    const items = d.notifications
+      .filter((n) => !n.canceled)
+      .map((n) => ({
+        id: n.id,
+        title: (n.headings && (n.headings.ar || n.headings.en)) || "",
+        message: (n.contents && (n.contents.ar || n.contents.en)) || "",
+        url: n.url || "",
+        t: n.send_after || n.queued_at || 0
+      }))
+      .sort((a, b) => b.t - a.t);
+    return new Response(JSON.stringify({ ok: true, items }), {
+      status: 200,
+      headers: { "Content-Type": "application/json", "Cache-Control": "public, max-age=30" }
+    });
+  } catch (e) {
+    return json({ ok: false, error: "list_failed" }, 502);
+  }
 }
