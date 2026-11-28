@@ -50,11 +50,15 @@ export async function onRequestPost(context) {
   };
   if (/^https:\/\//.test(link)) payload.url = link;
 
-  let res = await sendWithSegments(env.ONESIGNAL_REST_API_KEY, payload, "Subscribed Users");
+  let res = await sendWithSegments(env.ONESIGNAL_REST_API_KEY, payload, "Total Subscriptions");
   if (!res.ok && JSON.stringify(res.data).indexOf("egment") !== -1) {
-    res = await sendWithSegments(env.ONESIGNAL_REST_API_KEY, payload, "Total Subscriptions");
+    res = await sendWithSegments(env.ONESIGNAL_REST_API_KEY, payload, "Subscribed Users");
   }
-  if (!res.ok) return json({ ok: false, error: "onesignal_error", status: res.status, detail: res.data.errors || res.data }, 502);
+  if (!res.ok) {
+    const errs = res.data.errors || res.data;
+    if (JSON.stringify(errs).indexOf("not subscribed") !== -1) return json({ ok: false, error: "no_subscribers" }, 200);
+    return json({ ok: false, error: "onesignal_error", status: res.status, detail: errs }, 502);
+  }
   return json({ ok: true, id: res.data.id || null, recipients: res.data.recipients != null ? res.data.recipients : null });
 }
 

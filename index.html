@@ -436,6 +436,7 @@ function pushNotify(){var tk="";try{tk=localStorage.getItem("ghtoken")||""}catch
    if(r.ok&&d.ok)status("تم إرسال الإشعار"+(d.recipients!=null?" إلى "+d.recipients+" مشترك":"."));
    else if(d.error==="no_token"||d.error==="bad_token")status("فشل التحقق من توكن GitHub. راجع الإعدادات.");
    else if(d.error==="forbidden")status("التوكن لا يملك صلاحية الكتابة على المستودع.");
+   else if(d.error==="no_subscribers")status("لا يوجد مشتركون مفعّلون بعد. فعّل الجرس في التطبيق أولاً.");
    else if(d.error==="server_not_configured")status("خدمة الإشعارات غير مهيأة على الخادم بعد.");
    else status("فشل الإرسال ("+(d.error||r.status)+").")}).catch(function(e){status("خطأ في الشبكة: "+e.message)})}},
  {l:"إلغاء",alt:1}])}
