@@ -243,12 +243,14 @@ OneSignalDeferred.push(async function(OS){
     if(OS.User.PushSubscription.optedIn){await OS.User.PushSubscription.optOut();tt("تم إيقاف الإشعارات");paint(OS);return}
     if(OS.Notifications.permission===false&&Notification.permission==="denied"){tt("الإشعارات محظورة: فعّلها من إعدادات المتصفح للموقع");return}
     await OS.Notifications.requestPermission();
-    if(!OS.User.PushSubscription.optedIn&&Notification.permission==="granted")await OS.User.PushSubscription.optIn();
+    if(Notification.permission!=="granted"){tt("لم يُمنح إذن الإشعارات");paint(OS);return}
+    if(!OS.User.PushSubscription.optedIn)await OS.User.PushSubscription.optIn();
     paint(OS);
-    tt(OS.User.PushSubscription.optedIn?"تم تفعيل الإشعارات":"لم يتم تفعيل الإشعارات")
-   }catch(e){tt("تعذّر تفعيل الإشعارات")}
+    var sid="";try{sid=OS.User.PushSubscription.id||""}catch(e){}
+    tt(sid?"تم تفعيل الإشعارات ✓":"لم يتم التفعيل: لا يوجد اشتراك")
+   }catch(e){tt("خطأ: "+((e&&e.message)||e))}
   };
- }catch(e){b.onclick=function(){tt("الإشعارات غير متاحة الآن")}}
+ }catch(e){b.onclick=function(){tt("الإشعارات غير متاحة: "+((e&&e.message)||e))}}
 });
 })();
 
