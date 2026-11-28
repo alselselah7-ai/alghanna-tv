@@ -41,7 +41,14 @@ var css="@media(max-width:820px){"
 +"#mlbar button.on{background:var(--ac);color:var(--ac-tx);border-color:var(--ac)}#mlbar button.wab{border:0}"
 +"#mlbar .t{flex:1;display:flex;align-items:center;gap:7px;font-weight:700;font-size:15px;min-width:0}#mlbar .t i{width:9px;height:9px;border-radius:50%;background:#ff4d4d;flex:none}"
 +"#mtoast{position:fixed;inset-inline:12px;bottom:calc(var(--nv) + env(safe-area-inset-bottom,0px) + 12px);z-index:90;background:#0b241d;border:1px solid var(--ac);color:#fff;padding:12px 14px;border-radius:12px;font-size:14px;text-align:center}"
+/* ملء الشاشة الحقيقي: فيديو فقط بدون شريط المزوّد والإطار */
++"#lb:fullscreen{background:#000}"
++"#lb:fullscreen #mlbar,#lb:fullscreen .lvl,#lb:fullscreen .lvx{display:none!important}"
++"#lb:fullscreen .lv{position:absolute;inset:0;overflow:hidden;background:#000;border-radius:0;aspect-ratio:auto}"
++"#lb:fullscreen .lv iframe{position:absolute;border:0;width:980px;height:760px;max-width:none;transform-origin:0 0;clip-path:inset(68px 64px 212px 64px)}"
 +"}"
+/* قصّ إطار المزوّد: صفحته بعرض 980، البانر 70px والفيديو 852x480 بالمنتصف */
+
 /* خارج الجوال: إخفاء عناصر الجوال */
 +"@media(min-width:821px){#mnav,#mlbar,.mlive,.mct,#mtoast{display:none!important}}";
 var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
@@ -88,7 +95,21 @@ var prev=null,cur=location.hash;
 window.addEventListener("hashchange",function(){prev=cur;cur=location.hash;sync()});
 g("mlb1").onclick=function(){if(prev&&prev!=="#live")history.back();else location.replace("#home")};
 g("mlw").onclick=function(){share("قناة الغنّاء المحلية بتريم، البث المباشر الآن",SITE+"#live")};
-g("mlf").onclick=function(){var e=g("lv"),f=e.requestFullscreen||e.webkitRequestFullscreen;if(f){try{var p=f.call(e);if(p&&p.then)p.then(function(){try{screen.orientation.lock("landscape").catch(function(){})}catch(x){}}).catch(function(){})}catch(x){}}else toast("افتح البث في كروم لعرضه بملء الشاشة")};
+/* ملء الشاشة الحقيقي عند الضغط على البث المباشر (يتطلب نقرة المستخدم) */
+function liveFS(){if(!MQ.matches)return;var f=lb.requestFullscreen||lb.webkitRequestFullscreen;if(!f)return;
+ try{var p=f.call(lb);if(p&&p.catch)p.catch(function(){})}catch(x){}}
+document.addEventListener("click",function(e){if(!MQ.matches)return;var t=e.target,tA=t&&t.closest?t.closest('a[href="#live"]'):null;if(!tA)return;
+ if(document.fullscreenElement===lb||document.webkitFullscreenElement===lb)return;
+ liveFS()},true);
+g("mlf").onclick=liveFS;
+/* قصّ: صفحة المزوّد تُعرض بعرض 980 ثم تُكبَّر بحيث يملأ الفيديو (852x480 عند 64,68) الشاشة */
+function fitFS(){var f=document.querySelector("#lv iframe");if(!f)return;
+ var fs=document.fullscreenElement===lb||document.webkitFullscreenElement===lb||lb.classList.contains("fsdbg");
+ if(!fs){f.style.transform=f.style.left=f.style.top="";return}
+ var W=innerWidth,H=innerHeight,k=Math.min(W/852,H/480);
+ f.style.transform="scale("+k+")";f.style.left=(W/2-490*k)+"px";f.style.top=(H/2-308*k)+"px"}
+["fullscreenchange","webkitfullscreenchange","resize","orientationchange"].forEach(function(n){addEventListener(n,function(){setTimeout(fitFS,60)});document.addEventListener(n,function(){setTimeout(fitFS,60)})});
+document.addEventListener("fullscreenchange",function(){if(document.fullscreenElement===lb){try{screen.orientation.lock("landscape").catch(function(){})}catch(x){}}});
 
 /* جودة منخفضة (HLS بأقل مستوى). عند الفشل نرجع للبث الأساسي */
 var lowQ=false,mh=null,ltok=0;
