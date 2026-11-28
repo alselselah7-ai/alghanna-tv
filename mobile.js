@@ -220,7 +220,7 @@ function tt(m){var t=document.getElementById("mtoast");if(!t){t=document.createE
 function paint(OS){var on=false;try{on=!!(OS.User.PushSubscription.optedIn)}catch(e){}b.innerHTML=on?ON:OFF;b.style.color=on?"#2ee59d":""}
 OneSignalDeferred.push(async function(OS){
  try{
-  await OS.init({appId:APP,serviceWorkerPath:"sw.js",serviceWorkerParam:{scope:"/"},notifyButton:{enable:false},allowLocalhostAsSecureOrigin:true});
+  await OS.init({appId:APP,notifyButton:{enable:false},allowLocalhostAsSecureOrigin:true});
   paint(OS);
   /* طلب الإذن تلقائيا مرة واحدة فقط بعد فتح التطبيق */
   try{
