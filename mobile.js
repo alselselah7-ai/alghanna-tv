@@ -203,54 +203,59 @@ new MutationObserver(labels).observe(document.documentElement,{attributes:true,a
 labels();sync();mfRender();
 })();
 
-/* الإشعارات (OneSignal): زر جرس في الأعلى لتفعيل الإشعارات */
+/* الإشعارات (OneSignal): الجرس يفتح صندوق الإشعارات، والاشتراك تلقائي بعد السماح */
 (function(){
 var APP="02173c89-7ed7-4028-b09d-308822d8b492";
 window.OneSignalDeferred=window.OneSignalDeferred||[];
 var s=document.createElement("script");s.src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";s.defer=true;document.head.appendChild(s);
 var hd=document.querySelector("header");if(!hd)return;
 var b=document.createElement("button");b.type="button";b.className="mct";b.id="mbell";b.setAttribute("aria-label","الإشعارات");
-b.style.cursor="pointer";
-var ON='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5-6.7V3a2 2 0 0 0-4 0v1.3A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>';
-var OFF='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>';
-b.innerHTML=OFF;
+b.style.cursor="pointer";b.style.position="relative";
+b.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5-6.7V3a2 2 0 0 0-4 0v1.3A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>';
+var dot=document.createElement("span");dot.style.cssText="position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:#ff4d4d;display:none";b.appendChild(dot);
 var lang=hd.querySelector(".lang"),ct=hd.querySelector(".mct");
 hd.insertBefore(b,ct||lang||null);
-function tt(m){var t=document.getElementById("mtoast");if(!t){t=document.createElement("div");t.id="mtoast";document.body.appendChild(t)}t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(function(){t.hidden=true},3500)}
-function paint(OS){var on=false;try{on=!!(OS.User.PushSubscription.optedIn)}catch(e){}b.innerHTML=on?ON:OFF;b.style.color=on?"#2ee59d":""}
+var items=[];
+function seen(){return +(localStorage.getItem("agNotifSeen")||0)}
+function paintDot(){var n=0,t=seen();for(var i=0;i<items.length;i++)if(items[i].t>t)n++;dot.style.display=n?"block":"none"}
+function load(){return fetch("/api/push?list=1&_="+Date.now()).then(function(r){return r.json()}).then(function(d){if(d&&d.ok&&d.items){items=d.items;paintDot()}return items}).catch(function(){return items})}
+function esc(x){var d=document.createElement("div");d.textContent=x==null?"":String(x);return d.innerHTML}
+function fmt(t){try{return new Date(t*1000).toLocaleString("ar",{dateStyle:"medium",timeStyle:"short"})}catch(e){return ""}}
+function closePanel(){var p=document.getElementById("npanel");if(p)p.remove()}
+function render(box){
+ if(!items.length){box.innerHTML='<div style="padding:40px 16px;text-align:center;opacity:.7">لا توجد إشعارات حتى الآن</div>';return}
+ box.innerHTML=items.map(function(n,i){return '<div data-i="'+i+'" style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.1);'+(n.url?'cursor:pointer':'')+'"><div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(n.title)+'</b>'+(n.t>seen()?'<span style="color:#ff4d4d">●</span>':'')+'</div><div style="margin-top:4px;opacity:.9;line-height:1.5">'+esc(n.message)+'</div><div style="margin-top:6px;font-size:12px;opacity:.6">'+esc(fmt(n.t))+'</div></div>'}).join("");
+ box.onclick=function(e){var el=e.target.closest("[data-i]");if(!el)return;var n=items[+el.getAttribute("data-i")];if(n&&n.url&&/^https:\/\//.test(n.url))location.href=n.url}
+}
+function openPanel(){
+ closePanel();
+ var p=document.createElement("div");p.id="npanel";p.dir="rtl";
+ p.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.55);display:flex;justify-content:center;align-items:flex-start;font-family:inherit";
+ p.innerHTML='<div style="margin-top:56px;width:min(440px,94vw);max-height:75vh;display:flex;flex-direction:column;background:#14171c;color:#fff;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,.5);overflow:hidden"><div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.12)"><b>الإشعارات</b><button type="button" id="nclose" aria-label="إغلاق" style="background:none;border:0;color:#fff;font-size:22px;cursor:pointer;line-height:1">×</button></div><div id="nbox" style="overflow:auto"><div style="padding:40px 16px;text-align:center;opacity:.7">جارٍ التحميل…</div></div></div>';
+ document.body.appendChild(p);
+ p.onclick=function(e){if(e.target===p)closePanel()};
+ document.getElementById("nclose").onclick=closePanel;
+ var box=document.getElementById("nbox");
+ load().then(function(){render(box);var m=0;for(var i=0;i<items.length;i++)if(items[i].t>m)m=items[i].t;if(m){localStorage.setItem("agNotifSeen",String(m));paintDot()}});
+}
+b.onclick=openPanel;
+load();setInterval(load,120000);
+/* الاشتراك تلقائيا: بمجرد السماح بالإشعارات من الجوال */
 OneSignalDeferred.push(async function(OS){
  try{
   await OS.init({appId:APP,notifyButton:{enable:false},allowLocalhostAsSecureOrigin:true});
-  paint(OS);
-  /* طلب الإذن تلقائيا مرة واحدة فقط بعد فتح التطبيق */
-  try{
-   if(OS.Notifications.isPushSupported()&&Notification.permission==="default"&&!localStorage.getItem("agPushAsked")){
-    localStorage.setItem("agPushAsked","1");
-    setTimeout(async function(){
-     try{
-      if(Notification.permission!=="default")return;
-      await OS.Notifications.requestPermission();
-      if(Notification.permission==="granted"&&!OS.User.PushSubscription.optedIn)await OS.User.PushSubscription.optIn();
-      paint(OS);
-     }catch(e){}
-    },4000);
-   }
-  }catch(e){}
-  try{OS.User.PushSubscription.addEventListener("change",function(){paint(OS)})}catch(e){}
-  b.onclick=async function(){
-   try{
-    if(!OS.Notifications.isPushSupported()){tt("جهازك أو متصفحك لا يدعم الإشعارات");return}
-    if(OS.User.PushSubscription.optedIn){await OS.User.PushSubscription.optOut();tt("تم إيقاف الإشعارات");paint(OS);return}
-    if(OS.Notifications.permission===false&&Notification.permission==="denied"){tt("الإشعارات محظورة: فعّلها من إعدادات المتصفح للموقع");return}
-    await OS.Notifications.requestPermission();
-    if(Notification.permission!=="granted"){tt("لم يُمنح إذن الإشعارات");paint(OS);return}
-    if(!OS.User.PushSubscription.optedIn)await OS.User.PushSubscription.optIn();
-    paint(OS);
-    var sid="";try{sid=OS.User.PushSubscription.id||""}catch(e){}
-    tt(sid?"تم تفعيل الإشعارات ✓":"لم يتم التفعيل: لا يوجد اشتراك")
-   }catch(e){tt("خطأ: "+((e&&e.message)||e))}
-  };
- }catch(e){b.onclick=function(){tt("الإشعارات غير متاحة: "+((e&&e.message)||e))}}
+  if(!OS.Notifications.isPushSupported())return;
+  async function ensure(){try{if(Notification.permission==="granted"&&!OS.User.PushSubscription.optedIn)await OS.User.PushSubscription.optIn()}catch(e){}}
+  await ensure();
+  try{OS.Notifications.addEventListener("permissionChange",function(){ensure()})}catch(e){}
+  if(Notification.permission==="default"){
+   var asked=false;
+   var ask=async function(){if(asked)return;asked=true;try{await OS.Notifications.requestPermission();await ensure()}catch(e){}};
+   setTimeout(ask,4000);
+   /* لو منع المتصفح الطلب التلقائي، أول لمسة تطلب الإذن */
+   document.addEventListener("pointerup",function(){if(Notification.permission==="default"){asked=false;ask()}},{once:true});
+  }
+ }catch(e){}
 });
 })();
 
