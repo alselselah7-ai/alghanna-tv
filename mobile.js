@@ -222,6 +222,20 @@ OneSignalDeferred.push(async function(OS){
  try{
   await OS.init({appId:APP,serviceWorkerPath:"sw.js",serviceWorkerParam:{scope:"/"},notifyButton:{enable:false},allowLocalhostAsSecureOrigin:true});
   paint(OS);
+  /* طلب الإذن تلقائيا مرة واحدة فقط بعد فتح التطبيق */
+  try{
+   if(OS.Notifications.isPushSupported()&&Notification.permission==="default"&&!localStorage.getItem("agPushAsked")){
+    localStorage.setItem("agPushAsked","1");
+    setTimeout(async function(){
+     try{
+      if(Notification.permission!=="default")return;
+      await OS.Notifications.requestPermission();
+      if(Notification.permission==="granted"&&!OS.User.PushSubscription.optedIn)await OS.User.PushSubscription.optIn();
+      paint(OS);
+     }catch(e){}
+    },4000);
+   }
+  }catch(e){}
   try{OS.User.PushSubscription.addEventListener("change",function(){paint(OS)})}catch(e){}
   b.onclick=async function(){
    try{
