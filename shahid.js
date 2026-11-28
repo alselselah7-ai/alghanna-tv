@@ -30,7 +30,7 @@ var css="@media(max-width:820px){"
 +".mlive{margin:6px 14px 4px;background:#1a1c27!important;border:0!important;border-radius:14px;box-shadow:none!important;padding:12px 14px}.mlive b{font-size:16px}.mlive span.g{background:#fff;color:#111}"
 /* الأقسام */
 +".sec{padding:14px 0 4px}.sec h2{font-size:17px;font-weight:800;padding-inline:14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}"
-+".sec h2 span::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ac);margin-inline-end:8px;vertical-align:middle;box-shadow:12px 0 0 #3aa0ff}"
++".sec h2 span::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ac);margin-inline-end:8px;vertical-align:middle;box-shadow:12px 0 0 #fff}"
 +".sec h2 button.sa{color:#9ea1b0;font-size:13px;font-weight:600}"
 +".rail{padding-inline:14px}.rail .arrow{display:none!important}.track{gap:10px;padding-bottom:6px;scroll-padding-inline:14px}"
 +".card{width:min(44vw,176px)!important}.im{border-radius:10px!important}.im::after{display:none!important}.card b{font-size:13px!important;font-weight:600;color:#e8e9ef;margin-top:7px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.card small{font-size:11.5px;color:#9ea1b0}"
