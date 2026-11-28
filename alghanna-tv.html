@@ -426,9 +426,22 @@ async function saveGH(){var tk="";try{tk=localStorage.getItem("ghtoken")||""}cat
  catch(e){status("خطأ في الشبكة: "+e.message)}}
 function settings(){var t="";try{t=localStorage.getItem("ghtoken")||""}catch(e){}
  form("إعدادات الحفظ في GitHub",[{n:"tk",l:"توكن GitHub (يُحفظ في هذا المتصفح فقط)",v:t,p:"github_pat_..."}],[{l:"حفظ",fn:function(o){try{if(o.tk)localStorage.setItem("ghtoken",o.tk);else localStorage.removeItem("ghtoken")}catch(e){}status(o.tk?"حُفظ التوكن":"أُزيل التوكن")}},{l:"إلغاء",alt:1}]);$("ed").querySelector("input").type="password"}
+function pushNotify(){var tk="";try{tk=localStorage.getItem("ghtoken")||""}catch(e){}
+ if(!tk){status("أضف توكن GitHub من الإعدادات أولاً، ثم أعد المحاولة.");return}
+ form("إرسال إشعار للمشتركين",[{n:"t",l:"العنوان",v:"",p:"مثال: بث مباشر الآن"},{n:"m",l:"نص الإشعار",v:""},{n:"u",l:"رابط عند الضغط (اختياري)",v:"",p:"https://..."}],
+ [{l:"إرسال",fn:function(o){
+  if(!o.t||!o.m){status("أدخل العنوان والنص.");return false}
+  status("جارٍ إرسال الإشعار...");
+  fetch("/api/push",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tk},body:JSON.stringify({title:o.t,message:o.m,url:o.u})}).then(function(r){return r.json().catch(function(){return{}}).then(function(d){return{r:r,d:d}})}).then(function(x){var r=x.r,d=x.d;
+   if(r.ok&&d.ok)status("تم إرسال الإشعار"+(d.recipients!=null?" إلى "+d.recipients+" مشترك":"."));
+   else if(d.error==="no_token"||d.error==="bad_token")status("فشل التحقق من توكن GitHub. راجع الإعدادات.");
+   else if(d.error==="forbidden")status("التوكن لا يملك صلاحية الكتابة على المستودع.");
+   else if(d.error==="server_not_configured")status("خدمة الإشعارات غير مهيأة على الخادم بعد.");
+   else status("فشل الإرسال ("+(d.error||r.status)+").")}).catch(function(e){status("خطأ في الشبكة: "+e.message)})}},
+ {l:"إلغاء",alt:1}])}
 function adminBar(){document.body.classList.add("adm");var b=document.createElement("div");b.id="ab";
- b.innerHTML="<b>وضع المدير</b><button type='button' class='btn' id='a1'>حفظ في GitHub</button><button type='button' class='btn alt' id='a2'>تنزيل الملف</button><button type='button' class='btn alt' id='a3'>الإعدادات</button><button type='button' class='btn alt' id='a4'>تراجع عن غير المحفوظ</button><span id='abs'></span>";
- document.body.appendChild(b);$("a1").onclick=saveGH;$("a2").onclick=downloadOV;$("a3").onclick=settings;$("a4").onclick=function(){location.reload()};
+ b.innerHTML="<b>وضع المدير</b><button type='button' class='btn' id='a1'>حفظ في GitHub</button><button type='button' class='btn' id='a5'>إشعار</button><button type='button' class='btn alt' id='a2'>تنزيل الملف</button><button type='button' class='btn alt' id='a3'>الإعدادات</button><button type='button' class='btn alt' id='a4'>تراجع عن غير المحفوظ</button><span id='abs'></span>";
+ document.body.appendChild(b);$("a1").onclick=saveGH;$("a5").onclick=pushNotify;$("a2").onclick=downloadOV;$("a3").onclick=settings;$("a4").onclick=function(){location.reload()};
  window.addEventListener("beforeunload",function(e){if(DIRTY){e.preventDefault();e.returnValue=""}})}
 async function loadOV(){var tk="";try{tk=localStorage.getItem("ghtoken")||""}catch(e){}
  var c=new AbortController(),to=setTimeout(function(){c.abort()},2500);
