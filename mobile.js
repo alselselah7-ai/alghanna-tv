@@ -237,3 +237,6 @@ OneSignalDeferred.push(async function(OS){
  }catch(e){b.onclick=function(){tt("الإشعارات غير متاحة الآن")}}
 });
 })();
+
+/* تصميم على نمط تطبيقات البث (تجريبي) */
+(function(){var s=document.createElement("script");s.src="shahid.js?v=1";document.head.appendChild(s)})();
