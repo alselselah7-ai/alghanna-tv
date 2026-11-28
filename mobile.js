@@ -47,7 +47,7 @@ var css="@media(max-width:820px){"
 +"#mlfl button{height:42px;min-width:42px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font:700 14px var(--f);cursor:pointer}"
 +"#lb.rot{inset:auto;top:0;left:0;width:100dvh;height:100dvw;transform-origin:0 0;transform:translateX(100dvw) rotate(90deg)}"
 /* فلتر البحث */
-+".mf{margin:4px 4% 0}.mf .r{display:flex;gap:8px;overflow-x:auto;padding:4px 0;scrollbar-width:none}.mf .r::-webkit-scrollbar{display:none}"
++"#sbx.page{min-height:0}.mf{margin:4px 4% 0}.mf .r{display:flex;gap:8px;overflow-x:auto;padding:4px 0;scrollbar-width:none}.mf .r::-webkit-scrollbar{display:none}"
 +".mf .r b{flex:none;align-self:center;font-size:13px;color:var(--mu);font-weight:600}"
 +".mf button{flex:none;height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--ln);background:rgba(255,255,255,.07);color:#fff;font:600 14px var(--f);cursor:pointer}.mf button.on{background:var(--ac);color:var(--ac-tx);border-color:var(--ac)}"
 +".mf .c{font-size:13px;color:var(--mu);margin:2px 0 0}"
@@ -95,7 +95,7 @@ var hero=g("hero");hero.parentNode.insertBefore(ml,hero.nextSibling);
 var lb=g("lb"),bar=document.createElement("div");bar.id="mlbar";
 bar.innerHTML='<button type="button" id="mlb1" aria-label="back">&#10095;</button><div class="t"><i></i><span>مباشر</span></div><button type="button" id="mlq">جودة أقل</button><button type="button" class="rot" id="mlr" aria-label="rotate">&#10227; تدوير</button><button type="button" class="wab" id="mlw" aria-label="whatsapp">'+WA+'</button>';
 lb.insertBefore(bar,lb.firstChild);
-var fl=document.createElement("div");fl.id="mlfl";fl.innerHTML='<button type="button" id="mlr2">&#10227; رجوع للوضع العمودي</button>';lb.appendChild(fl);
+var fl=document.createElement("div");fl.id="mlfl";fl.innerHTML='<button type="button" id="mlr2">&#10227; عمودي</button>';lb.appendChild(fl);
 
 var prev=null,cur=location.hash;
 window.addEventListener("hashchange",function(){prev=cur;cur=location.hash;sync()});
