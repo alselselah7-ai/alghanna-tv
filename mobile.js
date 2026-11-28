@@ -108,25 +108,31 @@ function reqFS(){var d=document.documentElement,f=d.requestFullscreen||d.webkitR
  try{var p=f.call(d);return p&&p.then?p.catch(function(){}):Promise.resolve()}catch(x){return Promise.resolve()}}
 function exitFS(){var f=document.exitFullscreen||document.webkitExitFullscreen;if(f&&inFS()){try{var p=f.call(document);if(p&&p.catch)p.catch(function(){})}catch(x){}}}
 function unlockO(){try{screen.orientation.unlock()}catch(x){}}
-function enterLand(){if(mode==="land")return;mode="land";lockOK=false;lb.classList.add("land");
+var landT=0;
+function applyRot(){if(mode!=="land")return;var p=innerHeight>innerWidth;lb.classList.toggle("rot",p);fitFS()}
+function enterLand(){if(mode==="land")return;mode="land";lockOK=false;landT=Date.now();lb.classList.add("land");
  try{history.pushState({mland:1},"")}catch(x){}
+ /* نعرض الأفقي فوراً بالتدوير بالـCSS، وإذا نجح القفل الحقيقي يتحول تلقائياً عند تغير حجم الشاشة */
+ applyRot();
  var pr=inFS()?Promise.resolve():reqFS();
  pr.then(function(){
   var ok=false;try{ok=!!(screen.orientation&&screen.orientation.lock)}catch(x){}
-  if(!ok){lb.classList.add("rot");fitFS();return}
-  screen.orientation.lock("landscape").then(function(){lockOK=true;fitFS()},function(){if(mode==="land"){lb.classList.add("rot");fitFS()}})});
- fitFS()}
-function exitLand(fromPop){if(mode!=="land")return;mode="portrait";lockOK=false;lb.classList.remove("land","rot");unlockO();
+  if(!ok){applyRot();return}
+  screen.orientation.lock("landscape").then(function(){lockOK=true;landT=Date.now()},function(){});
+  [100,400,900,1600].forEach(function(t){setTimeout(applyRot,t)})});
+ }
+function exitLand(fromPop){if(mode!=="land")return;landT=0;mode="portrait";lockOK=false;lb.classList.remove("land","rot");unlockO();
  if(!fromPop&&history.state&&history.state.mland){try{history.back()}catch(x){}}
  setTimeout(fitFS,50);setTimeout(fitFS,300)}
 function liveFS(){if(!MQ.matches)return;reqFS()}
 document.addEventListener("click",function(e){if(!MQ.matches)return;var t=e.target,tA=t&&t.closest?t.closest('a[href="#live"]'):null;if(!tA)return;
  if(inFS())return;liveFS()},true);
 g("mlr").onclick=enterLand;g("mlr2").onclick=function(){exitLand(false)};
-addEventListener("popstate",function(){if(mode==="land"&&!(history.state&&history.state.mland))exitLand(true)});
+addEventListener("popstate",function(){if(mode==="land"&&Date.now()-landT>1500&&!(history.state&&history.state.mland))exitLand(true)});
 function goHome(){if(prev&&prev!=="#live")history.back();else location.replace("#home")}
 ["fullscreenchange","webkitfullscreenchange"].forEach(function(n){document.addEventListener(n,function(){
  if(inFS()||!MQ.matches||location.hash!=="#live")return;
+ if(mode==="land"&&Date.now()-landT<1800){applyRot();return}
  /* خروج من ملء الشاشة بزر الرجوع: من الأفقي نرجع للعمودي، ومن العمودي للرئيسية */
  if(mode==="land")exitLand(false);else goHome()})});
 /* قصّ: صفحة المزوّد تُعرض بعرض 980 ثم تُكبَّر بحيث يملأ الفيديو (852x480 عند 64,68) المساحة المتاحة */
@@ -134,7 +140,7 @@ function fitFS(){var f=document.querySelector("#lv iframe"),v=g("lv");if(!f||!v)
  if(!MQ.matches||!document.body.classList.contains("inlive")){f.style.transform=f.style.left=f.style.top="";return}
  var W=v.clientWidth,H=v.clientHeight;if(!W||!H)return;var k=Math.min(W/852,H/480);
  f.style.transform="scale("+k+")";f.style.left=(W/2-490*k)+"px";f.style.top=(H/2-308*k)+"px"}
-["resize","orientationchange"].forEach(function(n){addEventListener(n,function(){setTimeout(fitFS,60)})});
+["resize","orientationchange"].forEach(function(n){addEventListener(n,function(){setTimeout(applyRot,60);setTimeout(fitFS,60);setTimeout(applyRot,400)})});
 new MutationObserver(function(){fitFS()}).observe(g("lv"),{childList:true});
 
 /* جودة منخفضة (HLS بأقل مستوى). عند الفشل نرجع للبث الأساسي */
