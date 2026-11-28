@@ -4,7 +4,6 @@ var MQ=matchMedia("(max-width:820px)");
 var css="@media(max-width:820px){"
 +":root{--hh:58px;--nv:64px}"
 +"html{scroll-padding-top:70px}body,body.adm{padding-bottom:calc(var(--nv) + env(safe-area-inset-bottom,0px) + 10px)}"
-+"body.inlive{overflow:hidden}"
 +"header{min-height:var(--hh);height:var(--hh);flex-wrap:nowrap;gap:8px;padding:6px 12px}"
 +"header .pill,header>a.btn,#auth{display:none!important}"
 +".brand img{height:38px}.brand b{font-size:16px}.brand small{font-size:11px}"
@@ -31,21 +30,7 @@ var css="@media(max-width:820px){"
 +"#mnav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:var(--nv);color:#9fb9ae;font-size:11.5px;font-weight:500;-webkit-tap-highlight-color:transparent}"
 +"#mnav a svg{width:24px;height:24px}#mnav a.on{color:var(--ac)}#mnav a.on span{font-weight:700}"
 +"#mnav a.lv2{color:#fff}#mnav a.lv2 i{display:flex;align-items:center;justify-content:center;width:54px;height:54px;margin-top:-22px;border-radius:50%;background:var(--ac);color:var(--ac-tx);border:4px solid #05140f;box-shadow:0 4px 16px rgba(40,200,120,.45)}#mnav a.lv2 i svg{width:26px;height:26px}#mnav a.lv2 span{margin-top:-2px}"
-+"body.inlive #mnav{display:none}#live{z-index:70;padding:0}"
 /* البث بشاشة كاملة (عمودي أولاً، والتدوير اختياري) */
-+"#lb{position:fixed;inset:0;z-index:70;margin:0;padding:0;border:0;border-radius:0;background:#000;display:block}"
-+"#lb .lt,#lb .lvx{display:none}#lb .lv{position:absolute;inset:0;overflow:hidden;background:#000;border-radius:0;aspect-ratio:auto}"
-+"#lb .lv iframe{position:absolute;border:0;width:980px;height:760px;max-width:none;transform-origin:0 0;clip-path:inset(68px 64px 212px 64px)}"
-+"#lb .lvl{position:absolute;inset-inline:0;bottom:0;height:40px;padding:9px;background:rgba(5,20,15,.92);z-index:3;font-size:13px}"
-+"#mlbar{display:flex;position:absolute;top:0;inset-inline:0;z-index:5;height:calc(54px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 8px 0;align-items:center;gap:6px;background:#05140f;border-bottom:1px solid var(--ln)}"
-+"#mlbar button{height:38px;min-width:38px;border-radius:999px;border:1px solid var(--ln);background:rgba(255,255,255,.1);color:#fff;font:600 13px var(--f);padding:0 12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px}"
-+"#mlbar button.on{background:var(--ac);color:var(--ac-tx);border-color:var(--ac)}#mlbar button.wab{border:0}#mlbar button.rot{background:var(--ac);color:var(--ac-tx);border-color:var(--ac);font-weight:800}"
-+"#mlbar .t{flex:1;display:flex;align-items:center;gap:7px;font-weight:700;font-size:15px;min-width:0}#mlbar .t i{width:9px;height:9px;border-radius:50%;background:#ff4d4d;flex:none}"
-+"#mtoast{position:fixed;inset-inline:12px;bottom:calc(var(--nv) + env(safe-area-inset-bottom,0px) + 12px);z-index:90;background:#0b241d;border:1px solid var(--ac);color:#fff;padding:12px 14px;border-radius:12px;font-size:14px;text-align:center}"
-+"#lb.land #mlbar,#lb.land .lvl{display:none!important}"
-+"#mlfl{display:none;position:absolute;top:calc(10px + env(safe-area-inset-top,0px));inset-inline-start:10px;z-index:6;gap:8px}#lb.land #mlfl{display:flex}"
-+"#mlfl button{height:42px;min-width:42px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font:700 14px var(--f);cursor:pointer}"
-+"#lb.rot{inset:auto;top:0;left:0;width:100dvh;height:100dvw;transform-origin:0 0;transform:translateX(100dvw) rotate(90deg)}"
 /* فلتر البحث */
 +"#sbx.page{min-height:0}.mf{margin:4px 4% 0}.mf .r{display:flex;gap:8px;overflow-x:auto;padding:4px 0;scrollbar-width:none}.mf .r::-webkit-scrollbar{display:none}"
 +".mf .r b{flex:none;align-self:center;font-size:13px;color:var(--mu);font-weight:600}"
@@ -56,7 +41,23 @@ var css="@media(max-width:820px){"
 
 /* خارج الجوال: إخفاء عناصر الجوال */
 +"@media(min-width:821px){#mnav,#mlbar,#mlfl,.mlive,.mct,.mf,#mtoast{display:none!important}}";
-var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+/* شاشة البث الكاملة: مرتبطة بحالة body.inlive لا بعرض الشاشة، حتى لا تنهار عند تدوير الجوال نفسه (العرض الأفقي يتجاوز 820) */
+var css2="body.inlive{overflow:hidden}"
++"body.inlive #mnav{display:none}body.inlive #live{z-index:70;padding:0}"
++"body.inlive #lb{position:fixed;inset:0;z-index:70;margin:0;padding:0;border:0;border-radius:0;background:#000;display:block}"
++"body.inlive #lb .lt,body.inlive #lb .lvx{display:none}body.inlive #lb .lv{position:absolute;inset:0;overflow:hidden;background:#000;border-radius:0;aspect-ratio:auto}"
++"body.inlive #lb .lv iframe{position:absolute;border:0;width:980px;height:760px;max-width:none;transform-origin:0 0;clip-path:inset(68px 64px 212px 64px)}"
++"body.inlive #lb .lvl{position:absolute;inset-inline:0;bottom:0;height:40px;padding:9px;background:rgba(5,20,15,.92);z-index:3;font-size:13px}"
++"body.inlive #mlbar{display:flex;position:absolute;top:0;inset-inline:0;z-index:5;height:calc(54px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 8px 0;align-items:center;gap:6px;background:#05140f;border-bottom:1px solid var(--ln)}"
++"body.inlive #mlbar button{height:38px;min-width:38px;border-radius:999px;border:1px solid var(--ln);background:rgba(255,255,255,.1);color:#fff;font:600 13px var(--f);padding:0 12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px}"
++"body.inlive #mlbar button.on{background:var(--ac);color:var(--ac-tx);border-color:var(--ac)}body.inlive #mlbar button.wab{border:0}body.inlive #mlbar button.rot{background:var(--ac);color:var(--ac-tx);border-color:var(--ac);font-weight:800}"
++"body.inlive #mlbar .t{flex:1;display:flex;align-items:center;gap:7px;font-weight:700;font-size:15px;min-width:0}body.inlive #mlbar .t i{width:9px;height:9px;border-radius:50%;background:#ff4d4d;flex:none}"
++"#mtoast{position:fixed;inset-inline:12px;bottom:calc(var(--nv) + env(safe-area-inset-bottom,0px) + 12px);z-index:90;background:#0b241d;border:1px solid var(--ac);color:#fff;padding:12px 14px;border-radius:12px;font-size:14px;text-align:center}"
++"body.inlive #lb.land #mlbar,body.inlive #lb.land .lvl{display:none!important}"
++"body.inlive #mlfl{display:none;position:absolute;top:calc(10px + env(safe-area-inset-top,0px));inset-inline-start:10px;z-index:6;gap:8px}body.inlive #lb.land #mlfl{display:flex}"
++"body.inlive #mlfl button{height:42px;min-width:42px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font:700 14px var(--f);cursor:pointer}"
++"body.inlive #lb.rot{inset:auto;top:0;left:0;width:100vh;height:100vw;transform-origin:0 0;transform:translateX(100vw) rotate(90deg);width:100dvh;height:100dvw;transform:translateX(100dvw) rotate(90deg)}";
+var st=document.createElement("style");st.textContent=css+css2;document.head.appendChild(st);
 
 function g(i){return document.getElementById(i)}
 function tr(k,d){try{var v=T(k);return v&&v!==k?v:d}catch(e){return d}}
@@ -101,42 +102,31 @@ var prev=null,cur=location.hash;
 window.addEventListener("hashchange",function(){prev=cur;cur=location.hash;sync()});
 g("mlb1").onclick=function(){if(mode==="land"){exitLand(false);return}if(prev&&prev!=="#live")history.back();else location.replace("#home")};
 g("mlw").onclick=function(){share("قناة الغنّاء المحلية بتريم، البث المباشر الآن",SITE+"#live")};
-/* وضع البث: عمودي (الافتراضي بدون تدوير) أو أفقي (اختياري بزر التدوير) */
-var mode="portrait",lockOK=false;
+/* وضع البث: عمودي (الافتراضي) أو أفقي (زر التدوير). التدوير بالـCSS فقط: لا قفل اتجاه ولا اعتماد على حالة ملء الشاشة، فيثبت مهما فعل المتصفح */
+var mode="portrait";
 function inFS(){return !!(document.fullscreenElement||document.webkitFullscreenElement)}
 function reqFS(){var d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;if(!f)return Promise.resolve();
  try{var p=f.call(d);return p&&p.then?p.catch(function(){}):Promise.resolve()}catch(x){return Promise.resolve()}}
 function exitFS(){var f=document.exitFullscreen||document.webkitExitFullscreen;if(f&&inFS()){try{var p=f.call(document);if(p&&p.catch)p.catch(function(){})}catch(x){}}}
-function unlockO(){try{screen.orientation.unlock()}catch(x){}}
-var landT=0;
-function applyRot(){if(mode!=="land")return;var p=innerHeight>innerWidth;lb.classList.toggle("rot",p);fitFS()}
-function enterLand(){if(mode==="land")return;mode="land";lockOK=false;landT=Date.now();lb.classList.add("land");
+function applyRot(){if(mode!=="land")return;lb.classList.toggle("rot",innerHeight>=innerWidth);fitFS()}
+function enterLand(){if(mode==="land")return;mode="land";lb.classList.add("land");
  try{history.pushState({mland:1},"")}catch(x){}
- /* نعرض الأفقي فوراً بالتدوير بالـCSS، وإذا نجح القفل الحقيقي يتحول تلقائياً عند تغير حجم الشاشة */
- applyRot();
- var pr=inFS()?Promise.resolve():reqFS();
- pr.then(function(){
-  var ok=false;try{ok=!!(screen.orientation&&screen.orientation.lock)}catch(x){}
-  if(!ok){applyRot();return}
-  screen.orientation.lock("landscape").then(function(){lockOK=true;landT=Date.now()},function(){});
-  [100,400,900,1600].forEach(function(t){setTimeout(applyRot,t)})});
- }
-function exitLand(fromPop){if(mode!=="land")return;landT=0;mode="portrait";lockOK=false;lb.classList.remove("land","rot");unlockO();
+ applyRot();setTimeout(applyRot,60);setTimeout(applyRot,350)}
+function exitLand(fromPop){if(mode!=="land")return;mode="portrait";lb.classList.remove("land","rot");
  if(!fromPop&&history.state&&history.state.mland){try{history.back()}catch(x){}}
  setTimeout(fitFS,50);setTimeout(fitFS,300)}
 function liveFS(){if(!MQ.matches)return;reqFS()}
 document.addEventListener("click",function(e){if(!MQ.matches)return;var t=e.target,tA=t&&t.closest?t.closest('a[href="#live"]'):null;if(!tA)return;
  if(inFS())return;liveFS()},true);
 g("mlr").onclick=enterLand;g("mlr2").onclick=function(){exitLand(false)};
-addEventListener("popstate",function(){if(mode==="land"&&Date.now()-landT>1500&&!(history.state&&history.state.mland))exitLand(true)});
+addEventListener("popstate",function(){if(mode==="land"&&!(history.state&&history.state.mland))exitLand(true)});
 function goHome(){if(prev&&prev!=="#live")history.back();else location.replace("#home")}
 ["fullscreenchange","webkitfullscreenchange"].forEach(function(n){document.addEventListener(n,function(){
  if(inFS()||!MQ.matches||location.hash!=="#live")return;
- if(mode==="land"&&Date.now()-landT<1800){applyRot();return}
- /* خروج من ملء الشاشة بزر الرجوع: من الأفقي نرجع للعمودي، ومن العمودي للرئيسية */
- if(mode==="land")exitLand(false);else goHome()})});
+ /* خروج من ملء الشاشة: في وضع التدوير لا نفعل شيئاً أبداً (الخروج يكون بزر "عمودي" أو الرجوع فقط)، وفي العمودي نرجع للرئيسية */
+ if(mode!=="land")goHome()})});
 /* قصّ: صفحة المزوّد تُعرض بعرض 980 ثم تُكبَّر بحيث يملأ الفيديو (852x480 عند 64,68) المساحة المتاحة */
-function fitFS(){var f=document.querySelector("#lv iframe"),v=g("lv");if(!f||!v)return;
+function fitFS(){var f=document.querySelector("#lv iframe"),v=g("lv");if(!f||!v)return;if(mode!=="land")lb.classList.remove("rot");
  if(!MQ.matches||!document.body.classList.contains("inlive")){f.style.transform=f.style.left=f.style.top="";return}
  var W=v.clientWidth,H=v.clientHeight;if(!W||!H)return;var k=Math.min(W/852,H/480);
  f.style.transform="scale("+k+")";f.style.left=(W/2-490*k)+"px";f.style.top=(H/2-308*k)+"px"}
@@ -203,7 +193,7 @@ addEventListener("online",function(){toast("رجع الاتصال")});
 
 function sync(){var h=(location.hash||"#home").slice(1);if(["home","live","programs","courses","movies","browse","contact","search"].indexOf(h)<0)h="home";
  var on=MQ.matches&&h==="live";document.body.classList.toggle("inlive",on);
- if(!on){if(mode==="land"){mode="portrait";lb.classList.remove("land","rot");unlockO()}exitFS()}
+ if(!on){if(mode==="land"){mode="portrait";lb.classList.remove("land","rot")}exitFS()}
  setTimeout(fitFS,30);
  if(h!=="live"&&(lowQ||mh)){killLow();lowQ=false;g("mlq").classList.remove("on")}
  Array.prototype.forEach.call(nav.children,function(a){var k=a.dataset.k;a.classList.toggle("on",k===h||(k==="browse"&&(h==="courses"||h==="movies")))});
