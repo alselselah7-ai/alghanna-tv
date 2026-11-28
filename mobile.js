@@ -48,13 +48,13 @@ var css2="body.inlive{overflow:hidden}"
 +"body.inlive #lb .lt,body.inlive #lb .lvx{display:none}body.inlive #lb .lv{position:absolute;inset:0;overflow:hidden;background:#000;border-radius:0;aspect-ratio:auto}"
 +"body.inlive #lb .lv iframe{position:absolute;border:0;width:980px;height:760px;max-width:none;transform-origin:0 0;clip-path:inset(68px 64px 212px 64px)}"
 +"body.inlive #lb .lvl{position:absolute;inset-inline:0;bottom:0;height:40px;padding:9px;background:rgba(5,20,15,.92);z-index:3;font-size:13px}"
-+"body.inlive #mlbar{display:flex;position:absolute;top:0;inset-inline:0;z-index:5;height:calc(54px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 8px 0;align-items:center;gap:6px;background:#05140f;border-bottom:1px solid var(--ln)}"
++"body.inlive #mlbar{display:flex!important;position:absolute;top:0;inset-inline:0;z-index:5;height:calc(54px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 8px 0;align-items:center;gap:6px;background:#05140f;border-bottom:1px solid var(--ln)}"
 +"body.inlive #mlbar button{height:38px;min-width:38px;border-radius:999px;border:1px solid var(--ln);background:rgba(255,255,255,.1);color:#fff;font:600 13px var(--f);padding:0 12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px}"
 +"body.inlive #mlbar button.on{background:var(--ac);color:var(--ac-tx);border-color:var(--ac)}body.inlive #mlbar button.wab{border:0}body.inlive #mlbar button.rot{background:var(--ac);color:var(--ac-tx);border-color:var(--ac);font-weight:800}"
 +"body.inlive #mlbar .t{flex:1;display:flex;align-items:center;gap:7px;font-weight:700;font-size:15px;min-width:0}body.inlive #mlbar .t i{width:9px;height:9px;border-radius:50%;background:#ff4d4d;flex:none}"
 +"#mtoast{position:fixed;inset-inline:12px;bottom:calc(var(--nv) + env(safe-area-inset-bottom,0px) + 12px);z-index:90;background:#0b241d;border:1px solid var(--ac);color:#fff;padding:12px 14px;border-radius:12px;font-size:14px;text-align:center}"
 +"body.inlive #lb.land #mlbar,body.inlive #lb.land .lvl{display:none!important}"
-+"body.inlive #mlfl{display:none;position:absolute;top:calc(10px + env(safe-area-inset-top,0px));inset-inline-start:10px;z-index:6;gap:8px}body.inlive #lb.land #mlfl{display:flex}"
++"body.inlive #mlfl{display:none!important;position:absolute;top:calc(10px + env(safe-area-inset-top,0px));inset-inline-start:10px;z-index:6;gap:8px}body.inlive #lb.land #mlfl{display:flex!important}"
 +"body.inlive #mlfl button{height:42px;min-width:42px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font:700 14px var(--f);cursor:pointer}"
 +"body.inlive #lb.rot{inset:auto;top:0;left:0;width:100vh;height:100vw;transform-origin:0 0;transform:translateX(100vw) rotate(90deg);width:100dvh;height:100dvw;transform:translateX(100dvw) rotate(90deg)}";
 var st=document.createElement("style");st.textContent=css+css2;document.head.appendChild(st);
@@ -127,7 +127,7 @@ function goHome(){if(prev&&prev!=="#live")history.back();else location.replace("
  if(mode!=="land")goHome()})});
 /* قصّ: صفحة المزوّد تُعرض بعرض 980 ثم تُكبَّر بحيث يملأ الفيديو (852x480 عند 64,68) المساحة المتاحة */
 function fitFS(){var f=document.querySelector("#lv iframe"),v=g("lv");if(!f||!v)return;if(mode!=="land")lb.classList.remove("rot");
- if(!MQ.matches||!document.body.classList.contains("inlive")){f.style.transform=f.style.left=f.style.top="";return}
+ if(!document.body.classList.contains("inlive")){f.style.transform=f.style.left=f.style.top="";return}
  var W=v.clientWidth,H=v.clientHeight;if(!W||!H)return;var k=Math.min(W/852,H/480);
  f.style.transform="scale("+k+")";f.style.left=(W/2-490*k)+"px";f.style.top=(H/2-308*k)+"px"}
 ["resize","orientationchange"].forEach(function(n){addEventListener(n,function(){setTimeout(applyRot,60);setTimeout(fitFS,60);setTimeout(applyRot,400)})});
@@ -192,7 +192,7 @@ addEventListener("offline",function(){toast("أنت غير متصل بالإنت
 addEventListener("online",function(){toast("رجع الاتصال")});
 
 function sync(){var h=(location.hash||"#home").slice(1);if(["home","live","programs","courses","movies","browse","contact","search"].indexOf(h)<0)h="home";
- var on=MQ.matches&&h==="live";document.body.classList.toggle("inlive",on);
+ var on=h==="live"&&(MQ.matches||(document.body.classList.contains("inlive")&&matchMedia("(pointer:coarse)").matches));document.body.classList.toggle("inlive",on);
  if(!on){if(mode==="land"){mode="portrait";lb.classList.remove("land","rot")}exitFS()}
  setTimeout(fitFS,30);
  if(h!=="live"&&(lowQ||mh)){killLow();lowQ=false;g("mlq").classList.remove("on")}
